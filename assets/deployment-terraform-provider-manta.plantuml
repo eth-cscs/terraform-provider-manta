@@ -1,19 +1,27 @@
 @startuml
 
-left to right direction
-
 rectangle pc as "User" {
   (terraform) as "Terraform"
-  (terraform_provider) as "manta\nprovider"
+}
+
+rectangle repo as "This repository" #line.bold;line:green {
+  (terraform_examples) as "Terraform examples"
+  note right of terraform_examples: ./examples/provider
+  (terraform_manta_provider) as "manta\nprovider"
+  note right of terraform_manta_provider: ./internal/provider
+  (terraform_manta_client) as "manta\nclient"
+  note right of terraform_manta_client: ./manta
 }
 
 rectangle manta_terraform_provider as "Manta Terraform provider" {
-  (manta) as "Manta\nCLI"
+  (mantacli) as "Manta\nCLI"
+  (mantaws) as "Manta\nWS"
 }
 
 rectangle openchami as "OpenCHAMI" {
-  (pcs) as "Power\nControl\nService"
   (smd) as "State\nManagement\nDatabase"
+  (pcs) as "Power\nControl\nService"
+  (haproxy) as "HAProxy"
 }
 
 rectangle cluster as "Cluster" {
@@ -21,11 +29,16 @@ rectangle cluster as "Cluster" {
   (node) as "Node"
 }
 
-terraform -> terraform_provider : gRPC
-terraform_provider --> manta
-manta --> smd
-smd -left-> pcs
+terraform --> terraform_manta_provider
+terraform_examples --> terraform_manta_provider
+terraform_manta_provider --> terraform_manta_client
+terraform_manta_client --> mantacli : exec
+terraform_manta_client --> mantaws #line.bold : http
+mantacli --> haproxy
+mantaws --> haproxy #line.bold
+haproxy --> smd
+haproxy --> pcs
 pcs --> bmc
-bmc -> node
+bmc --> node
 
 @enduml
