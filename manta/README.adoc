@@ -1,0 +1,5 @@
+= Manta client
+
+> https://github.com/hashicorp-demoapp/hashicups-client-go[hashicups client go]
+
+image:https://raw.githubusercontent.com/hashicorp-demoapp/hashicups-client-go/refs/heads/main/docs/terraform-provider-diagram.jpeg[]

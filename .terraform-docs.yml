@@ -1,0 +1,24 @@
+# Configuration file for terraform-docs [1]
+#
+# Terraform-docs will generate some documentation for this module and its
+# internal submodules. Combine it with pre-commit to ensure the documentation
+# is always up to date.
+#
+# The format is documented on their website [2].
+#
+# [1]: https://terraform-docs.io/
+# [2]: https://terraform-docs.io/user-guide/configuration/
+
+formatter: "markdown table"
+
+output:
+  file: "README_TF.md"
+  mode: inject
+
+recursive:
+  enabled: true
+  path: examples
+  include-main: true
+
+settings:
+  lockfile: true

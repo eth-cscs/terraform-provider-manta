@@ -1,0 +1,38 @@
+@startuml
+
+left to right direction
+
+rectangle tf as "Terraform" #chartreuse
+rectangle tf_provider as "Terraform\nmanta-provider" #yellow
+
+rectangle abstraction as "abstraction" {
+  rectangle manta as "Manta"
+  rectangle csm as "CSM"
+  rectangle openchami as "OpenCHAMI"
+}
+
+rectangle theo_test_env as "Test environment" {
+  rectangle sushy as "Sushy-emulator"
+  rectangle libvirt as "libvirt"
+  rectangle virtual_node as "virtual node"
+}
+
+rectangle cscs as "CSCS" {
+  rectangle alps as "Alps BMC"
+  rectangle nodes as "Nodes"
+}
+
+
+tf --> tf_provider
+tf_provider --> manta
+tf_provider ..> openchami #red : Hackypatch
+manta --> openchami
+manta --> csm #tomato
+csm --> alps #tomato
+alps --> nodes #tomato
+
+openchami --> sushy
+sushy --> libvirt
+libvirt --> virtual_node
+
+@enduml

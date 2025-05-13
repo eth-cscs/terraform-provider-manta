@@ -1,0 +1,31 @@
+@startuml
+
+left to right direction
+
+rectangle pc as "User" {
+  (terraform) as "Terraform"
+  (terraform_provider) as "manta\nprovider"
+}
+
+rectangle manta_terraform_provider as "Manta Terraform provider" {
+  (manta) as "Manta\nCLI"
+}
+
+rectangle openchami as "OpenCHAMI" {
+  (pcs) as "Power\nControl\nService"
+  (smd) as "State\nManagement\nDatabase"
+}
+
+rectangle cluster as "Cluster" {
+  (bmc) as "Baseboard\nmanagement\ncontroller"
+  (node) as "Node"
+}
+
+terraform -> terraform_provider : gRPC
+terraform_provider --> manta
+manta --> smd
+smd -left-> pcs
+pcs --> bmc
+bmc -> node
+
+@enduml

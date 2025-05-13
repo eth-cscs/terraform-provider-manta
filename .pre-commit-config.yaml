@@ -1,0 +1,23 @@
+repos:
+  - repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.25
+    hooks:
+      - id: terraform-fmt
+      - id: tflint
+        args:
+          - "--config=__GIT_ROOT__/.tflint.hcl"
+  - repo: local
+    hooks:
+      - id: terraform-docs
+        name: terraform-docs
+        language: docker_image
+        entry: quay.io/terraform-docs/terraform-docs:latest  # or, change latest to pin to a specific version
+        args: ["."]
+        pass_filenames: false
+      - id: go-fmt
+        name: 'go fmt'
+        entry: run-go-fmt.sh
+        files: '\.go$'
+        language: 'script'
+        description: "Runs `gofmt`, requires golang"
+
