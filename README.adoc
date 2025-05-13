@@ -7,7 +7,7 @@
 
 === Context diagram
 
-image:assets/deployment-terraform-provider-manta.svg[]
+image::assets/deployment-terraform-provider-manta.svg[]
 
 == Goal
 
