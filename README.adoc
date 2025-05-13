@@ -1,13 +1,12 @@
 = Manta terraform provider
 :toc:
 :sectnums:
-:imagesdir: ..
 
 == Introduction
 
 === Context diagram
 
-image::assets/deployment-terraform-provider-manta.svg[]
+image:assets/deployment-terraform-provider-manta.svg[]
 
 == Goal
 
