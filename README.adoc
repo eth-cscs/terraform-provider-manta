@@ -1,7 +1,6 @@
 = Manta terraform provider
 :toc:
 :sectnums:
-:imagesdir: ..
 
 == Introduction
 
