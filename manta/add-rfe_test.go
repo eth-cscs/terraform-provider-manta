@@ -1,19 +1,37 @@
 package manta
 
 import (
-	"fmt"
 	"testing"
 )
 
-func TestAddRfeSuccess(t *testing.T) {
-	var w Wrapper
+func TestAddRfeFail(t *testing.T) {
+	var w Wrapper = Wrapper{access_token: "~/access_token", base_url: "http://localhost:3000"}
 
 	var rfe RfeItem = RfeItem{ID: "adsf"}
 
 	_, err := w.AddRfe(rfe)
-	if err != nil {
-		t.Errorf(`error: err`)
+	if err == nil {
+		return
 	}
 
-	fmt.Println(err)
+	t.Errorf(`error: add rfe should fail`)
+}
+
+func TestAddRfeSuccess(t *testing.T) {
+	var w Wrapper = Wrapper{access_token: "~/access_token", base_url: "http://localhost:3000"}
+
+	var rfe RfeItem = RfeItem{ID: testXnameRfe}
+
+	_, err := w.AddRfe(rfe)
+	if err != nil {
+		t.Errorf(`error: %s`, err)
+	}
+
+	out, err := w.DeleteRfe(testXnameRfe)
+	if err != nil {
+		t.Errorf("error: delete RFE has not been successfully completed\noutput: %s\nerror: %s",
+			out,
+			err,
+		)
+	}
 }

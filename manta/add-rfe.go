@@ -2,74 +2,37 @@ package manta
 
 import (
 	"bytes"
-	"errors"
-	"fmt"
-	"os/exec"
-	"strings"
+	"encoding/json"
+	"io"
+	"net/http"
 )
 
-func execOutErr(command string, arg ...string) (string, error) {
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-
-	cmd := exec.Command(command, arg...)
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	err := cmd.Run()
-
-	if err != nil {
-		fmt.Println(stderr.String())
-		return stderr.String(), errors.New(strings.Split(stderr.String(), "\n")[1])
-	} else {
-		fmt.Println(stdout.String())
-	}
-
-	return stdout.String(), nil
-}
-
 func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
-	var arguments []string
+	var rfes RedfishEndpointArray
 
-	if rfeItem.ID == "" {
-		return RfeItem{}, errors.New("ID cannot be empty")
-	}
+	rfes.RedfishEndpoints = append(rfes.RedfishEndpoints, rfeItem)
 
-	arguments = append(arguments, "add")
-	arguments = append(arguments, "redfish-endpoint")
+	client := &http.Client{}
 
-	arguments = append(arguments, "--id")
-	arguments = append(arguments, rfeItem.ID)
-
-	if rfeItem.FQDN != "" {
-		arguments = append(arguments, "--fqdn")
-		arguments = append(arguments, rfeItem.FQDN)
-	}
-
-	if rfeItem.User != "" {
-		arguments = append(arguments, "--user")
-		arguments = append(arguments, rfeItem.User)
-	}
-
-	if rfeItem.Hostname != "" {
-		arguments = append(arguments, "--hostname")
-		arguments = append(arguments, rfeItem.Hostname)
-	}
-
-	if rfeItem.Enabled != false {
-		arguments = append(arguments, "--enabled")
-	}
-
-	if rfeItem.RediscoverOnUpdate != false {
-		arguments = append(arguments, "--rediscover-on-update")
-	}
-
-	_, err := execOutErr("manta", arguments...)
-
+	jData, err := json.Marshal(rfes)
 	if err != nil {
 		return RfeItem{}, err
 	}
+
+	req, err := http.NewRequest("POST", w.base_url+"/redfish", bytes.NewBuffer(jData))
+	if err != nil {
+		return RfeItem{}, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+w.GetAccessToken())
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return RfeItem{}, err
+	}
+
+	_, err = io.ReadAll(resp.Body)
 
 	rfeReturn, _ := w.GetRfeId(rfeItem.ID)
 

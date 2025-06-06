@@ -1,9 +1,15 @@
 package manta
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
 // Wrapper is the main struct for interacting with the API
 type Wrapper struct {
-	base_url     string
-	access_token string
+	base_url             string
+	access_token         string
+	access_token_content string
 }
 
 type DiscoveryInfo struct {
@@ -23,6 +29,11 @@ type RfeItem struct {
 	DiscoveryInfo      DiscoveryInfo `json:"DiscoveryInfo"`
 }
 
+func (rfe *RfeItem) Print() {
+	outjson, _ := json.MarshalIndent(rfe, "", " ")
+	fmt.Println(string(outjson))
+}
+
 type NodeItem struct {
 	ID      string `json:"ID"`
 	Type    string `json:"Type"`
@@ -34,6 +45,11 @@ type NodeItem struct {
 	NetType string `json:"NetType"`
 	Arch    string `json:"Arch"`
 	Class   string `json:"Class"`
+}
+
+func (node *NodeItem) String() string {
+	outjson, _ := json.MarshalIndent(node, "", " ")
+	return string(outjson)
 }
 
 type RedfishEndpointArray struct {

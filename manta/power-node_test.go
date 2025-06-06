@@ -2,7 +2,6 @@ package manta
 
 import (
 	"encoding/json"
-	"fmt"
 	"testing"
 )
 
@@ -12,41 +11,72 @@ func marshalNode(node NodeItem) string {
 }
 
 func TestPowerNodeBadPowerStatus(t *testing.T) {
-	var w Wrapper
+	var w Wrapper = Wrapper{access_token: "~/access_token", base_url: "http://localhost:3000"}
 
-	out, err := w.PowerNodeId("x1000c0s0b1n1", "BadPowerStatus")
+	out, err := w.PowerNodeId(testXnameNode, "BadPowerStatus")
 
-	fmt.Println("node:", marshalNode(out))
+	correctNodeItem := NodeItem{
+		ID:      "",
+		Type:    "",
+		State:   "",
+		Flag:    "",
+		Enabled: false,
+		Role:    "",
+		NID:     0,
+		NetType: "",
+		Arch:    "",
+		Class:   "",
+	}
+
+	if out != correctNodeItem {
+		t.Errorf("error: Node received is incorrect\nexpected: %s,\nreceived: %s",
+			correctNodeItem.String(),
+			out.String(),
+		)
+	}
+
 	if err != nil {
-		fmt.Println(err)
 		return
 	}
 
 	t.Errorf(`error: the function don't fail after bad power status`)
 }
 
-func TestPowerNodeOff(t *testing.T) {
-	var w Wrapper
+func testPowerNodePower(t *testing.T, powerStatus string) {
+	var w Wrapper = Wrapper{access_token: "~/access_token", base_url: "http://localhost:3000"}
 
-	out, err := w.PowerNodeId("x1000c0s0b1n1", "off")
+	out, err := w.PowerNodeId(testXnameNode, powerStatus)
 
-	fmt.Println("node:", marshalNode(out))
+	correctNodeItem := NodeItem{
+		ID:      testXnameNode,
+		Type:    "Node",
+		State:   powerStatus,
+		Flag:    "OK",
+		Enabled: true,
+		Role:    "Compute",
+		NID:     16400389,
+		NetType: "Sling",
+		Arch:    "X86",
+		Class:   "River",
+	}
+
 	if err != nil {
-		fmt.Println(err)
-		t.Errorf(`error: cannot turn off`)
+		t.Errorf(`error: %s`, err)
 		return
+	}
+
+	if out != correctNodeItem {
+		t.Errorf("error: Node received is incorrect\nexpected: %s,\nreceived: %s",
+			correctNodeItem.String(),
+			out.String(),
+		)
 	}
 }
 
+func TestPowerNodeOff(t *testing.T) {
+	testPowerNodePower(t, "Off")
+}
+
 func TestPowerNodeOn(t *testing.T) {
-	var w Wrapper
-
-	out, err := w.PowerNodeId("x1000c0s0b1n1", "on")
-
-	fmt.Println("node:", marshalNode(out))
-	if err != nil {
-		fmt.Println(err)
-		t.Errorf(`error: cannot turn on`)
-		return
-	}
+	testPowerNodePower(t, "On")
 }

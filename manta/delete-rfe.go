@@ -1,18 +1,25 @@
 package manta
 
 import (
-	"bytes"
-	"os/exec"
+	"io"
+	"net/http"
 )
 
 func (w *Wrapper) DeleteRfe(rfeID string) (string, error) {
-	var stdout bytes.Buffer
+	client := &http.Client{}
+	req, err := http.NewRequest("DELETE", w.base_url+"/redfish/"+rfeID, nil)
+	req.Header.Set("Authorization", "Bearer "+w.GetAccessToken())
 
-	cmd := exec.Command("manta", "delete", "redfish-endpoint", "--id", rfeID)
+	if err != nil {
+		return "", err
+	}
 
-	cmd.Stdout = &stdout
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
 
-	cmd.Run()
+	body, err := io.ReadAll(resp.Body)
 
-	return string(stdout.Bytes()), nil
+	return string(body), nil
 }

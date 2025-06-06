@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 )
 
-func (w *Wrapper) GetPowerStatusNodeId(id string) (NodeStatus, error) {
+func (w *Wrapper) GetPowerStatusNodeId(id string) (string, error) {
 	var pcs PcsStatus
 
 	// TODO: stop using the PCS url directly
@@ -20,16 +21,16 @@ func (w *Wrapper) GetPowerStatusNodeId(id string) (NodeStatus, error) {
 	resp, err := http.Get(url)
 
 	if err != nil {
-		return NodeStatus{}, err
+		return "", err
 	}
 
 	body, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		return NodeStatus{}, err
+		return "", err
 	}
 
 	json.Unmarshal(body, &pcs)
 
-	return pcs.Status[0], err
+	return strings.Title(pcs.Status[0].PowerState), err
 }

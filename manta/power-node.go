@@ -1,27 +1,35 @@
 package manta
 
 import (
-	"bytes"
 	"errors"
-	"fmt"
-	"os/exec"
-	"strings"
+	"net/http"
 )
 
-func (w *Wrapper) PowerNodeId(id string, powerStatus string) (NodeItem, error) {
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
+func (w *Wrapper) PowerNodeId(id, powerStatus string) (NodeItem, error) {
+	var state string
 
-	if (powerStatus != "Off") && (powerStatus != "On") {
+	if powerStatus == "Off" {
+		state = "power-off"
+	} else if powerStatus == "On" {
+		state = "power-on"
+	} else {
 		return NodeItem{}, errors.New(`powerStatus ins't "Off" or "On"`)
 	}
 
-	cmd := exec.Command("manta", "power", strings.ToLower(powerStatus), "nodes", "--assume-yes", id)
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	cmd.Run()
-	cmd.Wait()
-	fmt.Println(string(stdout.Bytes()))
-	fmt.Println(string(stderr.Bytes()))
+	client := &http.Client{}
+
+	req, err := http.NewRequest("GET", w.base_url+"/node/"+id+"/"+state, nil)
+
+	if err != nil {
+		return NodeItem{}, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+w.GetAccessToken())
+
+	_, err = client.Do(req)
+	if err != nil {
+		return NodeItem{}, err
+	}
+
 	return w.GetNodeId(id)
 }

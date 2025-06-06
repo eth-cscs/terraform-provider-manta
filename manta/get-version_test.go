@@ -1,12 +1,12 @@
 package manta
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestGetVersionSuccess(t *testing.T) {
 	var w Wrapper = Wrapper{base_url: "http://localhost:3000"}
+	const expectedVersion string = "0.1.13"
 
 	out, err := w.Version()
 
@@ -15,7 +15,13 @@ func TestGetVersionSuccess(t *testing.T) {
 		return
 	}
 
-	fmt.Println("version: " + out)
+	if out != expectedVersion {
+		t.Errorf("error: version is incorrect\nexpected %s\nreceived %s",
+			expectedVersion,
+			out,
+		)
+		return
+	}
 }
 
 func TestGetVersionFail(t *testing.T) {

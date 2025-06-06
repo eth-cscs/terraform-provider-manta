@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func (w *Wrapper) GetNodeId(id string) (NodeItem, error) {
@@ -31,8 +30,11 @@ func (w *Wrapper) GetNodeId(id string) (NodeItem, error) {
 
 	json.Unmarshal(body, &node)
 
-	nodeStatus, _ := w.GetPowerStatusNodeId(id)
-	node.State = strings.Title(nodeStatus.PowerState)
+	node.State, err = w.GetPowerStatusNodeId(id)
+
+	if err != nil {
+		return NodeItem{}, err
+	}
 
 	return node, err
 }

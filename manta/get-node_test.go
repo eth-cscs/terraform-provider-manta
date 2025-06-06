@@ -1,21 +1,34 @@
 package manta
 
 import (
-	"encoding/json"
-	"fmt"
 	"testing"
 )
 
 func TestGetNodeSuccess(t *testing.T) {
 	var w Wrapper
 
-	out, err := w.GetNodeId("x1000c0s0b1n1")
+	out, err := w.GetNodeId(testXnameNode)
 
-	if err != nil {
-		return
+	out.State = "On"
+
+	correctNodeItem := NodeItem{
+		ID:      testXnameNode,
+		Type:    "Node",
+		State:   "On",
+		Flag:    "OK",
+		Enabled: true,
+		Role:    "Compute",
+		NID:     16400389,
+		NetType: "Sling",
+		Arch:    "X86",
+		Class:   "River",
 	}
 
-	fmt.Println(out)
-	str, _ := json.MarshalIndent(out, "", " ")
-	fmt.Println(string(str))
+	if err != nil {
+		t.Errorf(`error: Get node should has failed`)
+	}
+
+	if out != correctNodeItem {
+		t.Errorf(`error: Node received is incorrect`)
+	}
 }
