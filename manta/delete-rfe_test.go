@@ -5,7 +5,7 @@ import (
 )
 
 func TestDeleteRfeSuccess(t *testing.T) {
-	var w Wrapper = Wrapper{access_token: "~/access_token", base_url: "http://localhost:3000"}
+	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
 	const xname string = "x0c0s0b0"
 

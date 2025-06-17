@@ -3,6 +3,7 @@ package manta
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 )
@@ -19,7 +20,8 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 		return RfeItem{}, err
 	}
 
-	req, err := http.NewRequest("POST", w.base_url+"/redfish", bytes.NewBuffer(jData))
+	req, err := http.NewRequest("POST", w.Base_url+"/redfish", bytes.NewBuffer(jData))
+
 	if err != nil {
 		return RfeItem{}, err
 	}
@@ -32,7 +34,15 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 		return RfeItem{}, err
 	}
 
-	_, err = io.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return RfeItem{}, err
+	}
+
+	if string(body) == `"ERROR - Message: OCHAMI-RS: {\"type\":\"about:blank\",\"title\":\"Conflict\",\"detail\":\"operation would conflict with an existing resource that has the same FQDN or xname ID.\",\"status\":409}\n"` {
+		return RfeItem{}, errors.New("error: rfe item already exist")
+	}
 
 	rfeReturn, _ := w.GetRfeId(rfeItem.ID)
 

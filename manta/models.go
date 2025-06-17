@@ -7,9 +7,16 @@ import (
 
 // Wrapper is the main struct for interacting with the API
 type Wrapper struct {
-	base_url             string
-	access_token         string
+	Base_url             string
+	Access_token         string
 	access_token_content string
+}
+
+func NewWrapper(base_url, access_token string) *Wrapper {
+	w := new(Wrapper)
+	w.Access_token = access_token
+	w.Base_url = base_url
+	return w
 }
 
 type DiscoveryInfo struct {
@@ -27,6 +34,11 @@ type RfeItem struct {
 	Password           string        `json:"Password"`
 	RediscoverOnUpdate bool          `json:"RediscoverOnUpdate"`
 	DiscoveryInfo      DiscoveryInfo `json:"DiscoveryInfo"`
+}
+
+func (rfe *RfeItem) String() string {
+	outjson, _ := json.MarshalIndent(rfe, "", " ")
+	return string(outjson)
 }
 
 func (rfe *RfeItem) Print() {

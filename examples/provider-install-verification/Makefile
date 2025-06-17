@@ -11,3 +11,5 @@ output:
 	terraform output -json manta_version | jq -r .version
 destroy:
 	terraform destroy -auto-approve -var-file=tester.tfvars
+import:
+	terraform import -var-file=tester.tfvars -state

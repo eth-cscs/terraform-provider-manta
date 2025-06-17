@@ -24,7 +24,7 @@ resource "manta_rfe" "rfe_all" {
   hostname           = "hostname"
   rediscoveronupdate = true
   enabled            = true
-  password           = "password"
+  password_wo        = "password"
 }
 
 resource "manta_node" "node" {

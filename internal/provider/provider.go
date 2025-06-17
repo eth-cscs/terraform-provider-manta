@@ -102,7 +102,7 @@ func (p *mantaProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	// with Terraform configuration value if set.
 
 	base_url := os.Getenv("MANTA_BASE_URL")
-	access_token := os.Getenv("MANA_ACCESS_TOKEN")
+	access_token := os.Getenv("MANTA_ACCESS_TOKEN")
 
 	if !config.BaseURL.IsNull() {
 		base_url = config.BaseURL.ValueString()
@@ -145,17 +145,7 @@ func (p *mantaProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	tflog.Debug(ctx, "Creating HashiCups client")
 
 	// Create a new Manta client using the configuration values
-	w, err := manta.NewWrapper(base_url, access_token)
-	if err != nil {
-		tflog.Error(ctx, "Unable to Create Manta CLI Wrapper: "+err.Error())
-		resp.Diagnostics.AddError(
-			"Unable to Create Manta CLI Wrapper",
-			"An unexpected error occurred when creating the Manta Wrapper. "+
-				"Make sure Manta CLI is properly installed in your setup.\n\n"+
-				"Manta CLI Error: "+err.Error(),
-		)
-		return
-	}
+	var w *manta.Wrapper = manta.NewWrapper(base_url, access_token)
 
 	// Make the HashiCups client available during DataSource and Resource
 	// type Configure methods.

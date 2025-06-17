@@ -7,10 +7,8 @@ import (
 
 // Return the version of the Manta WS
 func (w *Wrapper) Version() (string, error) {
-	// Authorization: Bearer $(<access_token)"
-	// req.Header.Set("name", "value")
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", w.base_url+"/version", nil)
+	req, _ := http.NewRequest("GET", w.Base_url+"/version", nil)
 	resp, err := client.Do(req)
 
 	if err != nil {

@@ -11,7 +11,7 @@ func marshalNode(node NodeItem) string {
 }
 
 func TestPowerNodeBadPowerStatus(t *testing.T) {
-	var w Wrapper = Wrapper{access_token: "~/access_token", base_url: "http://localhost:3000"}
+	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
 	out, err := w.PowerNodeId(testXnameNode, "BadPowerStatus")
 
@@ -43,7 +43,7 @@ func TestPowerNodeBadPowerStatus(t *testing.T) {
 }
 
 func testPowerNodePower(t *testing.T, powerStatus string) {
-	var w Wrapper = Wrapper{access_token: "~/access_token", base_url: "http://localhost:3000"}
+	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
 	out, err := w.PowerNodeId(testXnameNode, powerStatus)
 

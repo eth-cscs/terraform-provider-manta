@@ -18,7 +18,7 @@ func (w *Wrapper) PowerNodeId(id, powerStatus string) (NodeItem, error) {
 
 	client := &http.Client{}
 
-	req, err := http.NewRequest("GET", w.base_url+"/node/"+id+"/"+state, nil)
+	req, err := http.NewRequest("GET", w.Base_url+"/node/"+id+"/"+state, nil)
 
 	if err != nil {
 		return NodeItem{}, err

@@ -34,7 +34,7 @@ func (w *Wrapper) GetRfe() ([]RfeItem, error) {
 	var rfeArray []RfeItem
 	var err error
 
-	rfeArray, err = getrfes(w.base_url+"/redfish/", w.GetAccessToken())
+	rfeArray, err = getrfes(w.Base_url+"/redfish/", w.GetAccessToken())
 
 	if err != nil {
 		return make([]RfeItem, 0), err
@@ -47,14 +47,16 @@ func (w *Wrapper) GetRfeId(rfeID string) (RfeItem, error) {
 	var rfeArray []RfeItem
 	var err error
 
-	rfeArray, err = getrfes(w.base_url+"/redfish/"+rfeID, w.GetAccessToken())
+	rfeArray, err = getrfes(w.Base_url+"/redfish/"+rfeID, w.GetAccessToken())
 
 	if err != nil {
 		return RfeItem{}, err
 	}
 
-	if len(rfeArray) != 1 {
-		return RfeItem{}, errors.New("error: length of array should be one")
+	if 1 < len(rfeArray) {
+		return RfeItem{}, errors.New("error: length of array should be zero or one")
+	} else if len(rfeArray) == 0 {
+		return RfeItem{}, nil
 	}
 
 	return rfeArray[0], nil

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"terraform-provider-manta/manta"
 
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
@@ -14,7 +15,8 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ resource.Resource = &nodeResource{}
+	_ resource.Resource                = &nodeResource{}
+	_ resource.ResourceWithImportState = &nodeResource{}
 )
 
 // NewnodeResource is a helper function to simplify the provider implementation.
@@ -164,6 +166,44 @@ func (r *nodeResource) Create(ctx context.Context, req resource.CreateRequest, r
 
 // Read refreshes the Terraform state with the latest data.
 func (r *nodeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state nodeResourceModel
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Get refreshed order value from Manta
+	node, err := r.client.GetNodeId(state.ID.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Reading Node",
+			"Could not read Node ID "+state.ID.ValueString()+": "+err.Error(),
+		)
+		return
+	}
+
+	var emptyNode = manta.NodeItem{}
+	if node == emptyNode {
+		resp.State.RemoveResource(ctx)
+		return
+	}
+
+	state.Type = types.StringValue(node.Type)
+	state.State = types.StringValue(node.State)
+	state.Flag = types.StringValue(node.Flag)
+	state.Enabled = types.BoolValue(node.Enabled)
+	state.Role = types.StringValue(node.Role)
+	state.NID = types.Int64Value(int64(node.NID))
+	state.NetType = types.StringValue(node.NetType)
+	state.Arch = types.StringValue(node.Arch)
+	state.Class = types.StringValue(node.Class)
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+
+	// Set refreshed state
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 // Update updates the resource and sets the updated Terraform state on success.
@@ -172,4 +212,9 @@ func (r *nodeResource) Update(ctx context.Context, req resource.UpdateRequest, r
 
 // Delete deletes the resource and removes the Terraform state on success.
 func (r *nodeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+}
+
+func (r *nodeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	// Retrieve import ID and save to id attribute
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

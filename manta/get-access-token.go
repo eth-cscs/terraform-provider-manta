@@ -12,7 +12,7 @@ func (w *Wrapper) GetAccessToken() string {
 		return w.access_token_content
 	}
 
-	var path string = w.access_token
+	var path string = w.Access_token
 
 	if strings.HasPrefix(path, "~/") {
 		usr, _ := user.Current()

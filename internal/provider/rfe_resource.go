@@ -6,16 +6,19 @@ import (
 	"terraform-provider-manta/manta"
 	"time"
 
-	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/types"
-
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ resource.Resource = &rfeResource{}
+	_ resource.Resource                = &rfeResource{}
+	_ resource.ResourceWithImportState = &rfeResource{}
 )
 
 // NewrfeResource is a helper function to simplify the provider implementation.
@@ -62,7 +65,7 @@ type rfeResourceModel struct {
 	Domain             types.String `tfsdk:"domain"`
 	FQDN               types.String `tfsdk:"fqdn"`
 	User               types.String `tfsdk:"user"`
-	Password           types.String `tfsdk:"password"`
+	Password           types.String `tfsdk:"password_wo"`
 	RediscoverOnUpdate types.Bool   `tfsdk:"rediscoveronupdate"`
 	Enabled            types.Bool   `tfsdk:"enabled"`
 	LastUpdated        types.String `tfsdk:"last_updated"`
@@ -93,8 +96,9 @@ func (r *rfeResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			"user": schema.StringAttribute{
 				Optional: true,
 			},
-			"password": schema.StringAttribute{
-				Optional: true,
+			"password_wo": schema.StringAttribute{
+				Optional:  true,
+				WriteOnly: true,
 			},
 			"rediscoveronupdate": schema.BoolAttribute{
 				Optional: true,
@@ -171,29 +175,39 @@ func (r *rfeResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 
 	// Get current state
 	var state rfeResourceModel
-	diags := req.State.Get(ctx, &state)
-	resp.Diagnostics.Append(diags...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	// Get refreshed order value from HashiCups
-	rfes, err := r.client.GetRfe()
+	// Get refreshed order value from Manta
+	rfe, err := r.client.GetRfeId(state.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error Reading HashiCups Order",
-			"Could not read HashiCups order ID "+state.ID.ValueString()+": "+err.Error(),
+			"Error Reading RFE",
+			"Could not read RFE ID "+state.ID.ValueString()+": "+err.Error(),
 		)
 		return
 	}
 
-	for _, rfe := range rfes {
-		tflog.Debug(ctx, "rfe id: "+rfe.ID)
+	var emptyRfe = manta.RfeItem{}
+	if rfe == emptyRfe {
+		resp.State.RemoveResource(ctx)
+		return
 	}
 
+	state.ID = types.StringValue(rfe.ID)
+	state.Type = types.StringValue(rfe.Type)
+	state.User = types.StringValue(rfe.User)
+	state.Hostname = types.StringValue(rfe.Hostname)
+	state.Domain = types.StringValue(rfe.Domain)
+	state.FQDN = types.StringValue(rfe.FQDN)
+	state.Enabled = types.BoolValue(rfe.Enabled)
+	state.RediscoverOnUpdate = types.BoolValue(rfe.RediscoverOnUpdate)
+
+	resp.Diagnostics.Append(resp.State.Set(ctx, &state)...)
+
 	// Set refreshed state
-	diags = resp.State.Set(ctx, &state)
-	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -220,9 +234,14 @@ func (r *rfeResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 	tflog.Debug(ctx, out)
 	if err != nil {
 		resp.Diagnostics.AddError(
-			"Error Deleting HashiCups Order",
+			"Error Deleting RFE",
 			"Could not delete order, unexpected error: "+err.Error(),
 		)
 		return
 	}
+}
+
+func (r *rfeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	// Retrieve import ID and save to id attribute
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

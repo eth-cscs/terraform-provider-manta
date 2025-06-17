@@ -2,6 +2,7 @@ package manta
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 	"strings"
@@ -31,6 +32,10 @@ func (w *Wrapper) GetPowerStatusNodeId(id string) (string, error) {
 	}
 
 	json.Unmarshal(body, &pcs)
+
+	if pcs.Status[0].Error == `Component not found in component map.` {
+		return "", errors.New(pcs.Status[0].Error)
+	}
 
 	return strings.Title(pcs.Status[0].PowerState), err
 }
