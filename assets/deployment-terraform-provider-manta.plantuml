@@ -6,7 +6,7 @@ rectangle pc as "User" {
 
 rectangle repo as "This repository" #line.bold;line:green {
   (terraform_examples) as "Terraform examples"
-  note right of terraform_examples: ./examples/provider
+  note right of terraform_examples: ./examples/main.tf
   (terraform_manta_provider) as "manta\nprovider"
   note right of terraform_manta_provider: ./internal/provider
   (terraform_manta_client) as "manta\nclient"
@@ -14,7 +14,6 @@ rectangle repo as "This repository" #line.bold;line:green {
 }
 
 rectangle manta_terraform_provider as "Manta Terraform provider" {
-  (mantacli) as "Manta\nCLI"
   (mantaws) as "Manta\nWS"
 }
 
@@ -32,10 +31,8 @@ rectangle cluster as "Cluster" {
 terraform --> terraform_manta_provider
 terraform_examples --> terraform_manta_provider
 terraform_manta_provider --> terraform_manta_client
-terraform_manta_client --> mantacli : exec
-terraform_manta_client --> mantaws #line.bold : http
-mantacli --> haproxy
-mantaws --> haproxy #line.bold
+terraform_manta_client --> mantaws : http
+mantaws --> haproxy
 haproxy --> smd
 haproxy --> pcs
 pcs --> bmc
