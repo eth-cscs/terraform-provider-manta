@@ -1,3 +1,6 @@
+test:
+	go test -run
+
 test-power-node-id:
 	go test -run PowerNodeBadPowerStatus
 
