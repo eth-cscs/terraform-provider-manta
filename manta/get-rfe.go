@@ -25,7 +25,15 @@ func getrfes(url, token string) ([]RfeItem, error) {
 
 	body, err := io.ReadAll(resp.Body)
 
-	json.Unmarshal(body, &getrfe)
+	if err != nil {
+		return make([]RfeItem, 0), err
+	}
+
+	err = json.Unmarshal(body, &getrfe)
+
+	if err != nil {
+		return make([]RfeItem, 0), err
+	}
 
 	return getrfe.RedfishEndpoints, nil
 }

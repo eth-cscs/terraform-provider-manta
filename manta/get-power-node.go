@@ -3,9 +3,10 @@ package manta
 import (
 	"encoding/json"
 	"errors"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func (w *Wrapper) GetPowerStatusNodeId(id string) (string, error) {
@@ -17,7 +18,7 @@ func (w *Wrapper) GetPowerStatusNodeId(id string) (string, error) {
 	// export XNAME=x0c0s0b0n0
 	// curl -s localhost:28007/power-status\?xname\="${XNAME}" | jq | grep 'powerState'
 	// curl -sk https://foobar.openchami.cluster:8443/hsm/v2/State/Components/"${XNAME}" | jq | grep 'State'
-	var url string = `http://localhost:28007/power-status?xname=` + id
+	var url = `http://localhost:28007/power-status?xname=` + id
 
 	resp, err := http.Get(url)
 
@@ -31,11 +32,16 @@ func (w *Wrapper) GetPowerStatusNodeId(id string) (string, error) {
 		return "", err
 	}
 
-	json.Unmarshal(body, &pcs)
+	err = json.Unmarshal(body, &pcs)
+
+	if err != nil {
+		return "", err
+	}
 
 	if pcs.Status[0].Error == `Component not found in component map.` {
 		return "", errors.New(pcs.Status[0].Error)
 	}
 
-	return strings.Title(pcs.Status[0].PowerState), err
+	var c = cases.Title(language.English)
+	return c.String(pcs.Status[0].PowerState), err
 }

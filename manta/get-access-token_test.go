@@ -5,7 +5,7 @@ import (
 )
 
 func TestGetAccessTokenSuccess(t *testing.T) {
-	var w Wrapper = Wrapper{Access_token: "~/access_token"}
+	var w = Wrapper{Access_token: "~/access_token"}
 
 	// check the size of the token
 	if len(w.GetAccessToken()) != 1156 {

@@ -5,7 +5,7 @@ import (
 )
 
 func TestGetVersionSuccess(t *testing.T) {
-	var w Wrapper = Wrapper{Base_url: "http://localhost:3000"}
+	var w = Wrapper{Base_url: "http://localhost:3000"}
 	const expectedVersion string = "0.1.13"
 
 	out, err := w.Version()
@@ -25,7 +25,7 @@ func TestGetVersionSuccess(t *testing.T) {
 }
 
 func TestGetVersionFail(t *testing.T) {
-	var w Wrapper = Wrapper{Base_url: "http://bad-address"}
+	var w = Wrapper{Base_url: "http://bad-address"}
 
 	_, err := w.Version()
 

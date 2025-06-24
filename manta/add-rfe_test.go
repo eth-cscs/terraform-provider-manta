@@ -5,9 +5,9 @@ import (
 )
 
 func TestAddRfeFail(t *testing.T) {
-	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	var rfe RfeItem = RfeItem{ID: "adsf"}
+	var rfe = RfeItem{ID: "adsf"}
 
 	_, err := w.AddRfe(rfe)
 	if err == nil {
@@ -18,9 +18,9 @@ func TestAddRfeFail(t *testing.T) {
 }
 
 func TestAddRfeSuccess(t *testing.T) {
-	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	var rfe RfeItem = RfeItem{ID: testXnameRfe}
+	var rfe = RfeItem{ID: testXnameRfe}
 
 	_, err := w.AddRfe(rfe)
 	if err != nil {
@@ -37,9 +37,9 @@ func TestAddRfeSuccess(t *testing.T) {
 }
 
 func TestAddRfeSuccessAll(t *testing.T) {
-	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	var rfe RfeItem = RfeItem{ID: testXnameRfe,
+	var rfe = RfeItem{ID: testXnameRfe,
 		Hostname:           "hostname",
 		Enabled:            true,
 		User:               "user",
@@ -54,7 +54,7 @@ func TestAddRfeSuccessAll(t *testing.T) {
 		t.Errorf(`error: %s`, err)
 	}
 
-	var rfeExpected RfeItem = RfeItem{ID: testXnameRfe,
+	var rfeExpected = RfeItem{ID: testXnameRfe,
 		Hostname:           "hostname",
 		FQDN:               "hostname",
 		Type:               "NodeBMC",

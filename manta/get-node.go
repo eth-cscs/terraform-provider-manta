@@ -9,7 +9,7 @@ import (
 
 func (w *Wrapper) GetNodeId(id string) (NodeItem, error) {
 	var node NodeItem
-	var url string = "https://foobar.openchami.cluster:8443/hsm/v2/State/Components/" + id
+	var url = "https://foobar.openchami.cluster:8443/hsm/v2/State/Components/" + id
 
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -28,7 +28,11 @@ func (w *Wrapper) GetNodeId(id string) (NodeItem, error) {
 		return NodeItem{}, err
 	}
 
-	json.Unmarshal(body, &node)
+	err = json.Unmarshal(body, &node)
+
+	if err != nil {
+		return NodeItem{}, err
+	}
 
 	node.State, err = w.GetPowerStatusNodeId(id)
 

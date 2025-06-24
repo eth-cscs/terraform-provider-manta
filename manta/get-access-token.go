@@ -12,7 +12,7 @@ func (w *Wrapper) GetAccessToken() string {
 		return w.access_token_content
 	}
 
-	var path string = w.Access_token
+	var path = w.Access_token
 
 	if strings.HasPrefix(path, "~/") {
 		usr, _ := user.Current()
@@ -21,9 +21,9 @@ func (w *Wrapper) GetAccessToken() string {
 	}
 
 	byteFile, _ := os.ReadFile(path)
-	var stringFile string = string(byteFile)
+	var stringFile = string(byteFile)
 
-	var splitFile []string = strings.Split(stringFile, "\n")
+	var splitFile = strings.Split(stringFile, "\n")
 
 	w.access_token_content = splitFile[0]
 

@@ -1,17 +1,11 @@
 package manta
 
 import (
-	"encoding/json"
 	"testing"
 )
 
-func marshalNode(node NodeItem) string {
-	str, _ := json.MarshalIndent(node, "", " ")
-	return string(str)
-}
-
 func TestPowerNodeBadPowerStatus(t *testing.T) {
-	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
 	out, err := w.PowerNodeId(testXnameNode, "BadPowerStatus")
 
@@ -43,7 +37,7 @@ func TestPowerNodeBadPowerStatus(t *testing.T) {
 }
 
 func testPowerNodePower(t *testing.T, powerStatus string) {
-	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
 	out, err := w.PowerNodeId(testXnameNode, powerStatus)
 

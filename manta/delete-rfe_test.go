@@ -5,7 +5,7 @@ import (
 )
 
 func TestDeleteRfeSuccess(t *testing.T) {
-	var w Wrapper = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
 	const xname string = "x0c0s0b0"
 
@@ -13,8 +13,12 @@ func TestDeleteRfeSuccess(t *testing.T) {
 	var err error
 
 	// Create a new RFE
-	var rfe RfeItem = RfeItem{ID: xname}
-	rfe, err = w.AddRfe(rfe)
+	var rfe = RfeItem{ID: xname}
+	_, err = w.AddRfe(rfe)
+
+	if err != nil {
+		t.Errorf(`error: %s`, err)
+	}
 
 	// Delete the new RFE
 	out, err = w.DeleteRfe(xname)

@@ -19,7 +19,7 @@ func (w *Wrapper) DeleteRfe(rfeID string) (string, error) {
 		return "", err
 	}
 
-	body, err := io.ReadAll(resp.Body)
+	body, _ := io.ReadAll(resp.Body)
 
 	return string(body), nil
 }

@@ -8,11 +8,12 @@ import (
 func (w *Wrapper) PowerNodeId(id, powerStatus string) (NodeItem, error) {
 	var state string
 
-	if powerStatus == "Off" {
+	switch powerStatus {
+	case "Off":
 		state = "power-off"
-	} else if powerStatus == "On" {
+	case "On":
 		state = "power-on"
-	} else {
+	default:
 		return NodeItem{}, errors.New(`powerStatus ins't "Off" or "On"`)
 	}
 
