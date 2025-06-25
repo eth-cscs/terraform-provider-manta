@@ -101,8 +101,9 @@ It is the two functions that request directly OpenCHAMI:
 
 == TODO
 
-* [ ] fix errors of `golangci-lint run`
+* [x] fix errors of `golangci-lint run`
 * [ ] reproduce `examples` folder as standard (eg., https://github.com/hashicorp/terraform-provider-scaffolding-framework/tree/main/examples[terraform-provider-scaffolding-framework])
+* [ ] adapt tools folder
 
 == Resources
 
