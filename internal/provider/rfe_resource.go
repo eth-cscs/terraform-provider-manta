@@ -128,9 +128,7 @@ func (r *rfeResource) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 
 	// Generate API request body from plan
-	var rfeItem manta.RfeItem
-
-	rfeItem = manta.RfeItem{
+	rfeItem := manta.RfeItem{
 		ID:                 string(plan.ID.ValueString()),
 		Hostname:           string(plan.Hostname.ValueString()),
 		Domain:             string(plan.Domain.ValueString()),

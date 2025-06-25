@@ -145,7 +145,7 @@ func (p *mantaProvider) Configure(ctx context.Context, req provider.ConfigureReq
 	tflog.Debug(ctx, "Creating HashiCups client")
 
 	// Create a new Manta client using the configuration values
-	var w *manta.Wrapper = manta.NewWrapper(base_url, access_token)
+	var w = manta.NewWrapper(base_url, access_token)
 
 	// Make the HashiCups client available during DataSource and Resource
 	// type Configure methods.
