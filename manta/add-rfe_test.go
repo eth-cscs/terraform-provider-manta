@@ -65,9 +65,10 @@ func TestAddRfeSuccessAll(t *testing.T) {
 	}
 
 	if rfeAdded != rfeExpected {
-		t.Errorf("error: rfe added is not as expected\nadded: %s\nexpected: %s",
+		t.Errorf("error: rfe added is not as expected\nadded: %s\nexpected: %s\ndiff: %s",
 			rfeAdded.String(),
 			rfeExpected.String(),
+			GetDiff(rfeAdded, rfeExpected),
 		)
 	}
 

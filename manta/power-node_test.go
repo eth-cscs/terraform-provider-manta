@@ -23,9 +23,10 @@ func TestPowerNodeBadPowerStatus(t *testing.T) {
 	}
 
 	if out != correctNodeItem {
-		t.Errorf("error: Node received is incorrect\nexpected: %s,\nreceived: %s",
+		t.Errorf("error: Node received is incorrect\nexpected: %s,\nreceived: %s\ndiff: %s",
 			correctNodeItem.String(),
 			out.String(),
+			GetDiff(correctNodeItem, out),
 		)
 	}
 
@@ -60,9 +61,10 @@ func testPowerNodePower(t *testing.T, powerStatus string) {
 	}
 
 	if out != correctNodeItem {
-		t.Errorf("error: Node received is incorrect\nexpected: %s,\nreceived: %s",
+		t.Errorf("error: Node received is incorrect\nexpected: %s,\nreceived: %s\ndiff: %s",
 			correctNodeItem.String(),
 			out.String(),
+			GetDiff(correctNodeItem, out),
 		)
 	}
 }
