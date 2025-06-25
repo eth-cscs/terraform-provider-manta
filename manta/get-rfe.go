@@ -62,7 +62,7 @@ func (w *Wrapper) GetRfeId(rfeID string) (RfeItem, error) {
 	}
 
 	if 1 < len(rfeArray) {
-		return RfeItem{}, errors.New("error: length of array should be zero or one")
+		return RfeItem{}, errors.New("length of array should be zero or one")
 	} else if len(rfeArray) == 0 {
 		return RfeItem{}, nil
 	}

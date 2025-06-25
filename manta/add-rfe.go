@@ -41,7 +41,7 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 	}
 
 	if string(body) == `"ERROR - Message: OCHAMI-RS: {\"type\":\"about:blank\",\"title\":\"Conflict\",\"detail\":\"operation would conflict with an existing resource that has the same FQDN or xname ID.\",\"status\":409}\n"` {
-		return RfeItem{}, errors.New("error: rfe item already exist")
+		return RfeItem{}, errors.New("rfe item already exist")
 	}
 
 	rfeReturn, _ := w.GetRfeId(rfeItem.ID)
