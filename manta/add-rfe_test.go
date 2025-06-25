@@ -60,7 +60,7 @@ func TestAddRfeSuccessAll(t *testing.T) {
 		Type:               "NodeBMC",
 		Enabled:            true,
 		User:               "user",
-		Password:           "password",
+		Password:           "",
 		RediscoverOnUpdate: true,
 	}
 
