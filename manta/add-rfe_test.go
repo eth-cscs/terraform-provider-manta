@@ -17,19 +17,25 @@ func TestAddRfeFail(t *testing.T) {
 	t.Errorf(`error: add rfe should fail`)
 }
 
-func TestAddRfeSuccess(t *testing.T) {
+func testAddRfeSuccess(t *testing.T, added, expected RfeItem) {
 	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
-
-	var rfe = RfeItem{ID: testXnameRfe}
 
 	_, err := w.DeleteRfe(testXnameRfe)
 	if err != nil {
 		t.Errorf(`error: %s`, err)
 	}
 
-	_, err = w.AddRfe(rfe)
+	added, err = w.AddRfe(added)
 	if err != nil {
 		t.Errorf(`error: %s`, err)
+	}
+
+	if added != expected {
+		t.Errorf("error: rfe added is not as expected\nadded: %s\nexpected: %s\ndiff: %s",
+			added.String(),
+			expected.String(),
+			GetDiff(added, expected),
+		)
 	}
 
 	_, err = w.DeleteRfe(testXnameRfe)
@@ -38,28 +44,22 @@ func TestAddRfeSuccess(t *testing.T) {
 	}
 }
 
-func TestAddRfeSuccessAll(t *testing.T) {
-	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+func TestAddRfeSuccess(t *testing.T) {
+	var added = RfeItem{ID: testXnameRfe}
+	var expected = RfeItem{ID: testXnameRfe, Type: "NodeBMC", FQDN: testXnameRfe}
 
-	var rfe = RfeItem{ID: testXnameRfe,
+	testAddRfeSuccess(t, added, expected)
+}
+
+func TestAddRfeSuccessAll(t *testing.T) {
+	var added = RfeItem{ID: testXnameRfe,
 		Hostname:           "hostname",
 		Enabled:            true,
 		User:               "user",
 		Password:           "password",
 		RediscoverOnUpdate: true,
 	}
-
-	_, err := w.DeleteRfe(testXnameRfe)
-	if err != nil {
-		t.Errorf(`error: %s`, err)
-	}
-
-	rfeAdded, err := w.AddRfe(rfe)
-	if err != nil {
-		t.Errorf(`error: %s`, err)
-	}
-
-	var rfeExpected = RfeItem{ID: testXnameRfe,
+	var expected = RfeItem{ID: testXnameRfe,
 		Hostname:           "hostname",
 		FQDN:               "hostname",
 		Type:               "NodeBMC",
@@ -69,16 +69,5 @@ func TestAddRfeSuccessAll(t *testing.T) {
 		RediscoverOnUpdate: true,
 	}
 
-	if rfeAdded != rfeExpected {
-		t.Errorf("error: rfe added is not as expected\nadded: %s\nexpected: %s\ndiff: %s",
-			rfeAdded.String(),
-			rfeExpected.String(),
-			GetDiff(rfeAdded, rfeExpected),
-		)
-	}
-
-	_, err = w.DeleteRfe(testXnameRfe)
-	if err != nil {
-		t.Errorf(`error: %s`, err)
-	}
+	testAddRfeSuccess(t, added, expected)
 }
