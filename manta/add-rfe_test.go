@@ -22,17 +22,19 @@ func TestAddRfeSuccess(t *testing.T) {
 
 	var rfe = RfeItem{ID: testXnameRfe}
 
-	_, err := w.AddRfe(rfe)
+	_, err := w.DeleteRfe(testXnameRfe)
 	if err != nil {
 		t.Errorf(`error: %s`, err)
 	}
 
-	out, err := w.DeleteRfe(testXnameRfe)
+	_, err = w.AddRfe(rfe)
 	if err != nil {
-		t.Errorf("error: delete RFE has not been successfully completed\noutput: %s\nerror: %s",
-			out,
-			err,
-		)
+		t.Errorf(`error: %s`, err)
+	}
+
+	_, err = w.DeleteRfe(testXnameRfe)
+	if err != nil {
+		t.Errorf(`error: %s`, err)
 	}
 }
 
@@ -47,7 +49,10 @@ func TestAddRfeSuccessAll(t *testing.T) {
 		RediscoverOnUpdate: true,
 	}
 
-	// TODO password is broken
+	_, err := w.DeleteRfe(testXnameRfe)
+	if err != nil {
+		t.Errorf(`error: %s`, err)
+	}
 
 	rfeAdded, err := w.AddRfe(rfe)
 	if err != nil {
@@ -72,11 +77,8 @@ func TestAddRfeSuccessAll(t *testing.T) {
 		)
 	}
 
-	out, err := w.DeleteRfe(testXnameRfe)
+	_, err = w.DeleteRfe(testXnameRfe)
 	if err != nil {
-		t.Errorf("error: delete RFE has not been successfully completed\noutput: %s\nerror: %s",
-			out,
-			err,
-		)
+		t.Errorf(`error: %s`, err)
 	}
 }
