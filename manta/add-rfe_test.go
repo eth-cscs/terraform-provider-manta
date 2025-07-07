@@ -44,6 +44,30 @@ func testAddRfeSuccess(t *testing.T, added, expected RfeItem) {
 	}
 }
 
+func TestAddTwiceRfe(t *testing.T) {
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+	var added = RfeItem{ID: testXnameRfe}
+
+	_, err := w.DeleteRfe(testXnameRfe)
+	if err != nil {
+		t.Errorf(`error: %s`, err)
+	}
+
+	added, err = w.AddRfe(added)
+	if err != nil {
+		t.Errorf(`error: %s`, err)
+	}
+	added, err = w.AddRfe(added)
+	if err == nil {
+		t.Errorf(`error: add rfe should fail`)
+	}
+
+	_, err = w.DeleteRfe(testXnameRfe)
+	if err != nil {
+		t.Errorf(`error: %s`, err)
+	}
+}
+
 func TestAddRfeSuccess(t *testing.T) {
 	var added = RfeItem{ID: testXnameRfe}
 	var expected = RfeItem{ID: testXnameRfe, Type: "NodeBMC", FQDN: testXnameRfe}
