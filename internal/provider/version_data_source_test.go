@@ -13,7 +13,7 @@ func TestAccVersionDataSource(t *testing.T) {
 			{
 				Config: providerConfig + `data "manta_version" "test" {}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.manta_version.test", "version", "0.1.13"),
+					resource.TestCheckResourceAttr("data.manta_version.test", "version", "0.1.15"),
 				),
 			},
 		},
