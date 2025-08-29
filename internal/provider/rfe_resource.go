@@ -139,6 +139,8 @@ func (r *rfeResource) Create(ctx context.Context, req resource.CreateRequest, re
 		Enabled:            bool(plan.Enabled.ValueBool()),
 	}
 
+	req.Config.GetAttribute(ctx, path.Root("password_wo"), &rfeItem.Password)
+
 	// Create new rfe
 	rfeCreated, err := r.client.AddRfe(rfeItem)
 	if err != nil {
