@@ -1,0 +1,24 @@
+= Provider
+:toc:
+:sectnums:
+
+== Makefile
+
+test:: for launching tests.
+
+== TODO
+
+* [ ] Do something when `ChildVerificationFailed`
++
+[source,json]
+----
+{
+  "ID": "x1000c0s0b1",
+  ...
+  "RediscoverOnUpdate": true,
+  "DiscoveryInfo": {
+    ...
+    "LastDiscoveryStatus": "ChildVerificationFailed",
+  }
+}
+----
