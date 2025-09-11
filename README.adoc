@@ -111,6 +111,7 @@ It is the two functions that request directly OpenCHAMI:
 
 * https://www.hashicorp.com/en/resources/creating-terraform-provider-for-anything[Creating a Terraform Provider for Just About Anything] (text)
 * https://youtu.be/noxwUVet5RE[Creating a Terraform Provider for Just About Anything] (video)
+* https://developer.hashicorp.com/terraform/plugin/framework-benefits[SDKv2 or Terraform Plugin Framework] (Why choose the Terraform Plugin Framework over SDKv2?)
 
 === Examples of Terraform provider
 
