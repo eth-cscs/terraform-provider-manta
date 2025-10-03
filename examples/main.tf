@@ -18,6 +18,12 @@ resource "manta_rfe" "rfe" {
   user = "root"
 }
 
+resource "manta_bss" "example" {
+  macs   = ["00:de:ad:be:ef:00"]
+  kernel = "https://example.com/kernel"
+  initrd = "https://example.com/initrd"
+}
+
 resource "manta_rfe" "rfe_all" {
   id                 = "x1002c0s0b10"
   user               = "user"
