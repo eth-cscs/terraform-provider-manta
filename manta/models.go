@@ -64,6 +64,56 @@ func (node *NodeItem) String() string {
 	return string(outjson)
 }
 
+type BssParams struct {
+	Hosts  []string `json:"hosts"`
+	Macs   []string `json:"macs"`
+	Nids   []string `json:"nids"`
+	Params string   `json:"params"`
+	Kernel string   `json:"kernel"`
+	Initrd string   `json:"initrd"`
+}
+
+// TODO should I use pointer on array? like this? *[]T
+func cmpArray[T comparable](arrA, arrB []T) bool {
+	if len(arrA) != len(arrB) {
+		return true
+	}
+
+	for i, str := range arrA {
+		if str != arrB[i] {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (bss *BssParams) Cmp(other *BssParams) bool {
+	if cmpArray(bss.Hosts, other.Hosts) {
+		return true
+	}
+	if cmpArray(bss.Macs, other.Macs) {
+		return true
+	}
+	if cmpArray(bss.Nids, other.Nids) {
+		return true
+	}
+
+	if bss.Params != other.Params {
+		return true
+	}
+
+	if bss.Kernel != other.Kernel {
+		return true
+	}
+
+	if bss.Initrd != other.Initrd {
+		return true
+	}
+
+	return false
+}
+
 type RedfishEndpointArray struct {
 	RedfishEndpoints []RfeItem `json:"RedfishEndpoints"`
 }
