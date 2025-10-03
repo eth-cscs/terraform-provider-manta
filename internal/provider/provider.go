@@ -164,6 +164,7 @@ func (p *mantaProvider) DataSources(_ context.Context) []func() datasource.DataS
 func (p *mantaProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewrfeResource,
+		NewbssResource,
 		NewnodeResource,
 	}
 }
