@@ -130,3 +130,49 @@ type NodeStatus struct {
 type PcsStatus struct {
 	Status []NodeStatus `json:"status"`
 }
+
+type NodeInterfacePatch struct {
+	MAC string `json:"MACAddress"`
+	IPs []IP   `json:"IPAddresses"`
+}
+
+type NodeInterface struct {
+	ID         string `json:"ID"`
+	Desc       string `json:"Description"`
+	MAC        string `json:"MACAddress"`
+	IPs        []IP   `json:"IPAddresses"`
+	LastUpdate string `json:"LastUpdate"`
+	CompID     string `json:"ComponentID"`
+	Type       string `json:"Type"`
+}
+
+func (nodeInterface *NodeInterface) Cmp(other *NodeInterface) bool {
+	if cmpArray(nodeInterface.IPs, other.IPs) {
+		return true
+	}
+
+	if nodeInterface.ID != other.ID {
+		return true
+	}
+
+	if nodeInterface.Type != other.Type {
+		return true
+	}
+
+	if nodeInterface.CompID != other.CompID {
+		return true
+	}
+
+	return false
+}
+
+type IP struct {
+	IP string `json:"IPAddress"`
+}
+
+type OchamiError struct {
+	Type   string `json:"type"`
+	Title  string `json:"title"`
+	Detail string `json:"detail"`
+	Status int    `json:"status"`
+}
