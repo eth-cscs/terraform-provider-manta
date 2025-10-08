@@ -81,3 +81,14 @@ func TestAddBssSuccessTwoMacs(t *testing.T) {
 
 	testAddBssSuccess(t, added, expected)
 }
+
+func TestDeleteBss(t *testing.T) {
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+	var added = BssParams{
+		Macs: []string{"00:de:ad:be:ef:00"},
+	}
+	a, err := w.DeleteBss(added)
+
+	fmt.Println(a)
+	fmt.Println(err)
+}
