@@ -17,7 +17,7 @@ func (w *Wrapper) AddBss(params BssParams) (BssParams, error) {
 		return BssParams{}, err
 	}
 
-	req, err := http.NewRequest("POST", "http://localhost:27778/boot/v1/bootparameters", bytes.NewBuffer(jData))
+	req, err := http.NewRequest("POST", w.Base_url+"/bss/boot-parameters", bytes.NewBuffer(jData))
 
 	if err != nil {
 		return BssParams{}, err

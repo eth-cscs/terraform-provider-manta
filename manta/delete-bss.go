@@ -12,7 +12,7 @@ func (w *Wrapper) DeleteBss(params BssParams) (string, error) {
 
 	jData, err := json.Marshal(params)
 
-	req, err := http.NewRequest("DELETE", "http://localhost:27778/boot/v1/bootparameters", bytes.NewBuffer(jData))
+	req, err := http.NewRequest("DELETE", w.Base_url+"/bss/boot-parameters", bytes.NewBuffer(jData))
 	req.Header.Set("Authorization", "Bearer "+w.GetAccessToken())
 	req.Header.Set("Content-Type", "application/json")
 
