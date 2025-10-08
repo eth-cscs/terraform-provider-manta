@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"time"
 )
 
 func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
@@ -47,6 +48,16 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 	}
 
 	rfeReturn, _ := w.GetRfeId(rfeItem.ID)
+
+	if rfeReturn.Enabled {
+		for rfeReturn.DiscoveryInfo.LastStatus != "DiscoverOK" {
+			if rfeReturn.DiscoveryInfo.LastStatus == "ChildVerificationFailed" {
+				break
+			}
+			time.Sleep(1 * time.Second)
+			rfeReturn, _ = w.GetRfeId(rfeReturn.ID)
+		}
+	}
 
 	return rfeReturn, nil
 }
