@@ -10,7 +10,7 @@ import (
 func (w *Wrapper) GetBssParams() ([]BssParams, error) {
 	var bss []BssParams
 
-	req, err := http.NewRequest("GET", w.Base_url+"/bss/boot-parameters", nil)
+	req, err := http.NewRequest("GET", "http://localhost:27778/boot/v1/bootparameters", nil)
 	req.Header.Set("Authorization", "Bearer "+w.GetAccessToken())
 	client := &http.Client{}
 	resp, err := client.Do(req)
