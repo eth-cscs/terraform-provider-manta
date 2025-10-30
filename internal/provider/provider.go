@@ -168,5 +168,6 @@ func (p *mantaProvider) Resources(_ context.Context) []func() resource.Resource 
 		NewbssResource,
 		NewnodeResource,
 		NewgroupResource,
+		NewcloudinitResource,
 	}
 }
