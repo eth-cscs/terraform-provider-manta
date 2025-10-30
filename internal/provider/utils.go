@@ -19,6 +19,19 @@ func tfListToStringArray(ctx context.Context, tflist types.List) []string {
 	return array
 }
 
+// https://discuss.hashicorp.com/t/how-to-model-a-map-with-variable-keys-and-differing-value-types/61664/2
+func tfMapToMap(ctx context.Context, tfmap types.Map) map[string]string {
+	elements := make(map[string]types.String, len(tfmap.Elements()))
+
+	tfmap.ElementsAs(ctx, &elements, false)
+	settings := make(map[string]string, len(elements))
+	for key, val := range elements {
+		settings[key] = val.ValueString()
+	}
+
+	return settings
+}
+
 func tfListToIps(ctx context.Context, tflist types.List) []manta.IP {
 	ips := tfListToStringArray(ctx, tflist)
 	ipsManta := make([]manta.IP, len(ips))
