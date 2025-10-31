@@ -127,6 +127,40 @@ func (r *bssResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 }
 
 func (r *bssResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan bssResourceModel
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	hosts := tfListToStringArray(ctx, plan.Hosts)
+	macs := tfListToStringArray(ctx, plan.Macs)
+	nids := tfListToStringArray(ctx, plan.Nids)
+
+	bssItem := manta.BssParams{
+		Hosts:  hosts,
+		Macs:   macs,
+		Nids:   nids,
+		Params: string(plan.Params.ValueString()),
+		Initrd: string(plan.Initrd.ValueString()),
+		Kernel: string(plan.Kernel.ValueString()),
+	}
+
+	_, err := r.client.UpdateBss(bssItem)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error creating bss",
+			"Could not create bss, unexpected error: "+err.Error(),
+		)
+		return
+	}
+
+	diags = resp.State.Set(ctx, plan)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
 
 func (r *bssResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
