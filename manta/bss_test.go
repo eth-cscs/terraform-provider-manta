@@ -20,6 +20,21 @@ func testAddBss(t *testing.T, added, expected BssParams) {
 	}
 }
 
+func testUpdateBss(t *testing.T, added, expected BssParams) {
+	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
+
+	added, err := w.UpdateBss(added)
+	if err != nil {
+		t.Errorf(`error: %s`, err)
+	}
+
+	if added.Cmp(&expected) {
+		fmt.Println(added)
+		fmt.Println(expected)
+		t.Errorf(`error: the added is not equal to the expected`)
+	}
+}
+
 func testDeleteBss(t *testing.T, added BssParams) {
 	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
@@ -53,6 +68,30 @@ func testGetBss(t *testing.T, expected BssParams) {
 		fmt.Println(expected)
 		t.Errorf(`error: the added is not equal to the expected`)
 	}
+}
+
+func testAddGetUpdateDelete(t *testing.T, added, updated BssParams) {
+	testAddBss(t, added, added)
+	testGetBss(t, added)
+	testUpdateBss(t, updated, updated)
+	testGetBss(t, updated)
+	testDeleteBss(t, updated)
+}
+
+func TestUpdateBssSuccessPaths(t *testing.T) {
+	var added = BssParams{
+		Macs:   []string{"00:de:ad:be:ef:00"},
+		Kernel: "https://example.com/kernel",
+		Initrd: "https://example.com/initrd",
+	}
+
+	var updated = BssParams{
+		Macs:   []string{"00:de:ad:be:ef:00"},
+		Kernel: "https://another.com/kernel",
+		Initrd: "https://another.com/initrd",
+	}
+
+	testAddGetUpdateDelete(t, added, updated)
 }
 
 func testAddGetDelete(t *testing.T, added, expected BssParams) {
