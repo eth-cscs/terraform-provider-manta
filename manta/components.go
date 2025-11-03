@@ -31,6 +31,44 @@ type Component struct {
 	Locked              bool        `json:"Locked,omitempty"`
 }
 
+func getComponent(url, token string) (Components, error) {
+	components := Components{}
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	client := &http.Client{Transport: tr}
+
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		return components, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return components, err
+	}
+
+	body, err := io.ReadAll(resp.Body)
+
+	err = json.Unmarshal(body, &components)
+
+	if err != nil {
+		return components, err
+	}
+
+	if err != nil {
+		return components, err
+	}
+
+	return components, nil
+}
+
 func requestComponent(url, token, method string, components Components) error {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -80,6 +118,13 @@ func (w *Wrapper) CreateComponent(newComponents Components) error {
 		"https://foobar.openchami.cluster:8443/hsm/v2/State/Components",
 		w.GetAccessToken(),
 		newComponents,
+	)
+}
+
+func (w *Wrapper) GetComponent() (Components, error) {
+	return getComponent(
+		"https://foobar.openchami.cluster:8443/hsm/v2/State/Components",
+		w.GetAccessToken(),
 	)
 }
 
