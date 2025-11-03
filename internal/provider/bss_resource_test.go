@@ -12,24 +12,24 @@ func TestAccBssResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: providerConfig + `
-resource "manta_bss" "test" {
+resource "manta_bss_boot_parameters" "test" {
   macs   = ["00:de:ad:be:ef:00"]
   params = "params"
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("manta_bss.test", "params", "params"),
+					resource.TestCheckResourceAttr("manta_bss_boot_parameters.test", "params", "params"),
 				),
 			},
 			{
 				Config: providerConfig + `
-resource "manta_bss" "test" {
+resource "manta_bss_boot_parameters" "test" {
   macs   = ["00:de:ad:be:ef:00"]
   params = "params"
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("manta_bss.test", "params", "params"),
+					resource.TestCheckResourceAttr("manta_bss_boot_parameters.test", "params", "params"),
 				),
 			},
 		},

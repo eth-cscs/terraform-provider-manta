@@ -46,7 +46,7 @@ func (r *bssResource) Configure(_ context.Context, req resource.ConfigureRequest
 }
 
 func (r *bssResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_bss"
+	resp.TypeName = req.ProviderTypeName + "_bss_boot_parameters"
 }
 
 type bssResourceModel struct {
