@@ -44,7 +44,7 @@ func (r *cloudinitResource) Configure(_ context.Context, req resource.ConfigureR
 }
 
 func (r *cloudinitResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_cloudinit"
+	resp.TypeName = req.ProviderTypeName + "_cloudinit_defaults"
 }
 
 type cloudinitResourceModel struct {

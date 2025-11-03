@@ -12,24 +12,24 @@ func TestCloudInitResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: providerConfig + `
-resource "manta_cloudinit" "test" {
+resource "manta_cloudinit_defaults" "test" {
   base_url    = "http://cloud-init/cloud-init"
   public_keys = ["ssh-ed25519 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA user1@demo-head"]
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("manta_cloudinit.test", "base_url", "http://cloud-init/cloud-init"),
+					resource.TestCheckResourceAttr("manta_cloudinit_defaults.test", "base_url", "http://cloud-init/cloud-init"),
 				),
 			},
 			{
 				Config: providerConfig + `
-resource "manta_cloudinit" "test" {
+resource "manta_cloudinit_defaults" "test" {
   base_url    = "http://cloud-init/cloud-init"
   public_keys = ["ssh-ed25519 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA user1@demo-head"]
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("manta_cloudinit.test", "base_url", "http://cloud-init/cloud-init"),
+					resource.TestCheckResourceAttr("manta_cloudinit_defaults.test", "base_url", "http://cloud-init/cloud-init"),
 				),
 			},
 		},
