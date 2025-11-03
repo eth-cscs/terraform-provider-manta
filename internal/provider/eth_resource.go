@@ -44,7 +44,7 @@ func (r *ethResource) Configure(_ context.Context, req resource.ConfigureRequest
 }
 
 func (r *ethResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_eth"
+	resp.TypeName = req.ProviderTypeName + "_smd_interface"
 }
 
 type ethResourceModel struct {
