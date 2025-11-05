@@ -54,6 +54,9 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 			if rfeReturn.DiscoveryInfo.LastStatus == "ChildVerificationFailed" {
 				break
 			}
+			if rfeReturn.DiscoveryInfo.LastStatus == "HTTPsGetFailed" {
+				break
+			}
 			time.Sleep(1 * time.Second)
 			rfeReturn, _ = w.GetRfeId(rfeReturn.ID)
 		}
