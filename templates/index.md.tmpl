@@ -1,0 +1,18 @@
+---
+page_title: "Manta Provider"
+subcategory: ""
+description: |-
+  Terraform Provider for Manta web service
+---
+
+Use the Manta provider to interact with Manta web service.
+
+Manta dispatches requests to two different possible backend [CSM](https://cray-hpe.github.io/docs-csm/en-15/) and [OpenCHAMI](https://openchami.org/).
+
+~> This Terraform provider still in development and do not only use manta web service as it should, but do request directly to OpenCHAMI.
+
+## Example Usage
+
+{{tffile "examples/provider.tf"}}
+
+{{ .SchemaMarkdown | trimspace }}
