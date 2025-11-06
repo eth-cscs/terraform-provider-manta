@@ -84,6 +84,7 @@ func (r *ethResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed: true,
 			},
 		},
+		Description: `Manage ethernet interfaces.`,
 	}
 }
 

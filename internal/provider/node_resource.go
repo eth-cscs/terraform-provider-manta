@@ -80,8 +80,9 @@ func (r *nodeResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 				Computed: true,
 			},
 			"state": schema.StringAttribute{
-				Optional: true,
-				Computed: true,
+				MarkdownDescription: `Power state, either "On" or "Off"`,
+				Optional:            true,
+				Computed:            true,
 			},
 			"flag": schema.StringAttribute{
 				Computed: true,

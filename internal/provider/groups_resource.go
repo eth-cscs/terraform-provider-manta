@@ -67,6 +67,7 @@ func (r *groupResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				ElementType: types.StringType,
 			},
 		},
+		Description: `Manage groups of components.`,
 	}
 }
 

@@ -76,29 +76,34 @@ func (r *rfeResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
-				Required: true,
+				MarkdownDescription: "RFE's xname",
+				Required:            true,
 			},
 			"type": schema.StringAttribute{
 				Computed: true,
 			},
 			"hostname": schema.StringAttribute{
-				Optional: true,
-				Computed: true,
+				MarkdownDescription: "hostname of redfish endpoint's FQDN",
+				Optional:            true,
+				Computed:            true,
 			},
 			"domain": schema.StringAttribute{
-				Optional: true,
-				Computed: true,
+				MarkdownDescription: "domain of redfish endpoint's FQDN",
+				Optional:            true,
+				Computed:            true,
 			},
 			"fqdn": schema.StringAttribute{
 				Optional: true,
 				Computed: true,
 			},
 			"user": schema.StringAttribute{
-				Optional: true,
+				MarkdownDescription: "username to use when interrogating endpoint",
+				Optional:            true,
 			},
 			"password_wo": schema.StringAttribute{
-				Optional:  true,
-				WriteOnly: true,
+				MarkdownDescription: "password to use when interrogating endpoint",
+				Optional:            true,
+				WriteOnly:           true,
 			},
 			"rediscoveronupdate": schema.BoolAttribute{
 				Optional: true,
@@ -112,7 +117,8 @@ func (r *rfeResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Computed: true,
 			},
 		},
-		Description: "Rfe represents a single rfe.",
+		Description: `Manage redfish endpoint.
+It interacts with the State Management Database (SMD)`,
 	}
 }
 

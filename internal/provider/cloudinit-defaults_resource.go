@@ -56,13 +56,16 @@ func (r *cloudinitResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"base_url": schema.StringAttribute{
-				Required: true,
+				MarkdownDescription: "URL to cloud-init",
+				Required:            true,
 			},
 			"public_keys": schema.ListAttribute{
-				Required:    true,
-				ElementType: types.StringType,
+				MarkdownDescription: "Public keys add in `~/.ssh/authorized_keys`",
+				Required:            true,
+				ElementType:         types.StringType,
 			},
 		},
+		Description: `Set default meta-data for cluster in cloud-init.`,
 	}
 }
 

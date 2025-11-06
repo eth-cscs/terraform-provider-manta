@@ -66,23 +66,29 @@ func (r *bssResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 				Optional:    true,
 			},
 			"macs": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
+				MarkdownDescription: "one or more MAC addresses whose boot parameters to add",
+				ElementType:         types.StringType,
+				Optional:            true,
 			},
 			"nids": schema.ListAttribute{
-				ElementType: types.StringType,
-				Optional:    true,
+				MarkdownDescription: "one or more node IDs whose boot parameters to add (default [])",
+				ElementType:         types.StringType,
+				Optional:            true,
 			},
 			"params": schema.StringAttribute{
-				Optional: true,
+				MarkdownDescription: "kernel parameters",
+				Optional:            true,
 			},
 			"kernel": schema.StringAttribute{
-				Optional: true,
+				MarkdownDescription: "URI of kernel",
+				Optional:            true,
 			},
 			"initrd": schema.StringAttribute{
-				Optional: true,
+				MarkdownDescription: "URI of initrd/initramfs",
+				Optional:            true,
 			},
 		},
+		Description: `Add new boot parameters for one or more components.`,
 	}
 }
 

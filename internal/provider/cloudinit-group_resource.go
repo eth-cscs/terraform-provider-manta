@@ -67,6 +67,7 @@ func (r *cloudinitGroupResource) Schema(_ context.Context, _ resource.SchemaRequ
 				ElementType: types.StringType,
 			},
 		},
+		Description: `Add one or more new groups to cloud-init.`,
 	}
 }
 
