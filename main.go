@@ -29,7 +29,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/scitas/manta", // This repo does not exist in HC's registry. This is a tentative value. registry.terraform.io/cscs/manta perhaps?
+		Address: "registry.terraform.io/eth-cscs/manta", // This repo does not exist in HC's registry. This is a tentative value. registry.terraform.io/cscs/manta perhaps?
 		Debug:   debug,
 	}
 

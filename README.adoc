@@ -58,7 +58,7 @@ following content:
 provider_installation {
 
   dev_overrides {
-      "registry.terraform.io/scitas/manta" = "<PATH>"
+      "registry.terraform.io/eth-cscs/manta" = "<PATH>"
   }
 
   # For all other providers, install them directly from their origin provider

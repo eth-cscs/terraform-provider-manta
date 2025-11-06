@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     manta = {
-      source  = "registry.terraform.io/scitas/manta" # to be confirmed
+      source  = "registry.terraform.io/eth-cscs/manta" # to be confirmed
       version = ">= 0.0.1"
     }
   }
