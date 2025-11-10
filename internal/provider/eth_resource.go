@@ -114,7 +114,7 @@ func (r *ethResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	nodeEth, err := r.client.GetEthernetInterface(ethItem.MAC)
+	nodeEth, _ := r.client.GetEthernetInterface(ethItem.MAC)
 
 	plan.CompID = types.StringValue(nodeEth.CompID)
 	plan.Type = types.StringValue(nodeEth.Type)
@@ -142,7 +142,7 @@ func (r *ethResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		IPs: ips,
 	}
 
-	nodeEth, err := r.client.PatchEthernetInterface(updateReq)
+	err := r.client.PatchEthernetInterface(updateReq)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error update eth",
@@ -150,6 +150,8 @@ func (r *ethResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		)
 		return
 	}
+
+	nodeEth, _ := r.client.GetEthernetInterface(updateReq.MAC)
 
 	data.CompID = types.StringValue(nodeEth.CompID)
 	data.Type = types.StringValue(nodeEth.Type)

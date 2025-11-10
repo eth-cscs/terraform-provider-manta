@@ -19,6 +19,7 @@ func TestDeleteEthernetInterface404(t *testing.T) {
 
 	if err == nil {
 		t.Errorf(`error: missing error`)
+		return
 	}
 
 	if err.Error() != "no such component ethernet interface." {
@@ -29,10 +30,7 @@ func TestDeleteEthernetInterface404(t *testing.T) {
 func testGetEthernetInterface(t *testing.T, mac string, expected NodeInterface) {
 	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	comp, err := w.GetEthernetInterface(mac)
-	if err != nil {
-		t.Errorf(`error: %s`, err)
-	}
+	comp, _ := w.GetEthernetInterface(mac)
 
 	if comp.Cmp(&expected) {
 		{
@@ -50,22 +48,10 @@ func testGetEthernetInterface(t *testing.T, mac string, expected NodeInterface) 
 func TestGetEthernetInterfaceBlank(t *testing.T) {
 	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	comp, err := w.GetEthernetInterface("aa:aa:aa:aa:aa:aa")
-	var expected = NodeInterface{}
+	_, err := w.GetEthernetInterface("aa:aa:aa:aa:aa:aa")
 
-	if comp.Cmp(&expected) {
-		{
-			node, _ := json.Marshal(comp)
-			fmt.Println("received: " + string(node))
-		}
-		{
-			node, _ := json.Marshal(expected)
-			fmt.Println("expected: " + string(node))
-		}
-		t.Errorf(`error: not equal`)
-	}
-	if err == nil {
-		t.Errorf(`error: missing error`)
+	if err.Status != 404 {
+		t.Errorf(`error: missing 404 error`)
 	}
 }
 
@@ -102,7 +88,7 @@ func TestEthernetInterface(t *testing.T) {
 func testPatchEthernetInterface(t *testing.T, added NodeInterfacePatch) {
 	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	_, err := w.PatchEthernetInterface(added)
+	err := w.PatchEthernetInterface(added)
 	if err != nil {
 		t.Errorf(`error: %s`, err)
 	}

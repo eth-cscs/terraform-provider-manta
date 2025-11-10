@@ -236,8 +236,7 @@ func (r *rfeResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 	}
 
 	// Delete existing order
-	out, err := r.client.DeleteRfe(state.ID.ValueString())
-	tflog.Debug(ctx, out)
+	err := r.client.DeleteRfe(state.ID.ValueString())
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Deleting RFE",

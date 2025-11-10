@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"terraform-provider-manta/manta"
 
-	"github.com/hashicorp/terraform-plugin-log/tflog"
-
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 
@@ -113,7 +111,7 @@ func (r *bssResource) Create(ctx context.Context, req resource.CreateRequest, re
 		Kernel: string(plan.Kernel.ValueString()),
 	}
 
-	_, err := r.client.AddBss(bssItem)
+	err := r.client.AddBss(bssItem)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating bss",
@@ -153,7 +151,7 @@ func (r *bssResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		Kernel: string(plan.Kernel.ValueString()),
 	}
 
-	_, err := r.client.UpdateBss(bssItem)
+	err := r.client.UpdateBss(bssItem)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error creating bss",
@@ -190,8 +188,7 @@ func (r *bssResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		Kernel: string(state.Kernel.ValueString()),
 	}
 
-	out, err := r.client.DeleteBss(bssItem)
-	tflog.Debug(ctx, out)
+	err := r.client.DeleteBss(bssItem)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Deleting BSS",

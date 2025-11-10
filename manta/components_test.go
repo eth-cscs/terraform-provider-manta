@@ -55,6 +55,7 @@ func TestCreateGetDeleteComponent(t *testing.T) {
 	},
 	}
 
+	testGetComponent(t, Components{[]Component{}})
 	testCreateComponent(t, components)
 	testGetComponent(t, components)
 	testDeleteComponent(t, components)

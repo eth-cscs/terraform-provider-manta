@@ -5,44 +5,30 @@ import (
 	"testing"
 )
 
-func testAddBss(t *testing.T, added, expected BssParams) {
+func testAddBss(t *testing.T, added BssParams) {
 	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	added, err := w.AddBss(added)
+	err := w.AddBss(added)
 	if err != nil {
 		t.Errorf(`error: %s`, err)
-	}
-
-	if added.Cmp(&expected) {
-		fmt.Println(added)
-		fmt.Println(expected)
-		t.Errorf(`error: the added is not equal to the expected`)
+		return
 	}
 }
 
-func testUpdateBss(t *testing.T, added, expected BssParams) {
+func testUpdateBss(t *testing.T, added BssParams) {
 	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	added, err := w.UpdateBss(added)
+	err := w.UpdateBss(added)
 	if err != nil {
 		t.Errorf(`error: %s`, err)
-	}
-
-	if added.Cmp(&expected) {
-		fmt.Println(added)
-		fmt.Println(expected)
-		t.Errorf(`error: the added is not equal to the expected`)
+		return
 	}
 }
 
 func testDeleteBss(t *testing.T, added BssParams) {
 	var w = Wrapper{Access_token: "~/access_token", Base_url: "http://localhost:3000"}
 
-	body, err := w.DeleteBss(added)
-
-	if body != "" {
-		t.Errorf(`error: body should be empty: %s`, body)
-	}
+	err := w.DeleteBss(added)
 
 	if err != nil {
 		t.Errorf(`error: %s`, err)
@@ -71,9 +57,9 @@ func testGetBss(t *testing.T, expected BssParams) {
 }
 
 func testAddGetUpdateDelete(t *testing.T, added, updated BssParams) {
-	testAddBss(t, added, added)
+	testAddBss(t, added)
 	testGetBss(t, added)
-	testUpdateBss(t, updated, updated)
+	testUpdateBss(t, updated)
 	testGetBss(t, updated)
 	testDeleteBss(t, updated)
 }
@@ -95,7 +81,7 @@ func TestUpdateBssSuccessPaths(t *testing.T) {
 }
 
 func testAddGetDelete(t *testing.T, added, expected BssParams) {
-	testAddBss(t, added, expected)
+	testAddBss(t, added)
 	testGetBss(t, expected)
 	testDeleteBss(t, added)
 }
@@ -160,6 +146,6 @@ func TestDeleteBss(t *testing.T) {
 		Params: "console=ttyS0,115200 console=tty0",
 	}
 
-	testAddBss(t, added, added)
+	testAddBss(t, added)
 	testDeleteBss(t, added)
 }

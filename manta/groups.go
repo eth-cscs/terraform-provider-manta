@@ -1,14 +1,5 @@
 package manta
 
-import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
-)
-
 type MemberAddBody struct {
 	ID string `json:"id"`
 }
@@ -25,137 +16,8 @@ type Group struct {
 	Members        `json:"members,omitempty"`
 }
 
-func deleteGroup(url, token string) error {
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	client := &http.Client{Transport: tr}
-
-	req, err := http.NewRequest("DELETE", url, nil)
-
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Authorization", "Bearer "+token)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	fmt.Println(string(body))
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func deleteMemberToGroup(url, token string) error {
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	client := &http.Client{Transport: tr}
-
-	req, err := http.NewRequest("DELETE", url, nil)
-
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Authorization", "Bearer "+token)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	fmt.Println(string(body))
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func createGroup(url, token string, newGroup Group) error {
-
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	client := &http.Client{Transport: tr}
-
-	jData, err := json.Marshal(newGroup)
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jData))
-
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+token)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	fmt.Println(string(body))
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func addMemberToGroup(url, token string, newMember MemberAddBody) error {
-	client := &http.Client{}
-
-	jData, err := json.Marshal(newMember)
-	if err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jData))
-
-	if err != nil {
-		return err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+token)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	fmt.Println(string(body))
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (w *Wrapper) AddMemberToGroup(xname, group_label string) error {
-	return addMemberToGroup(
+	return openchamiRequestPost(
 		"https://foobar.openchami.cluster:8443/hsm/v2/groups/"+group_label+"/members",
 		w.GetAccessToken(),
 		MemberAddBody{ID: xname},
@@ -163,14 +25,15 @@ func (w *Wrapper) AddMemberToGroup(xname, group_label string) error {
 }
 
 func (w *Wrapper) DeleteMemberToGroup(xname, group_label string) error {
-	return deleteMemberToGroup(
+	_, err := openchamiRequestDelete[any](
 		"https://foobar.openchami.cluster:8443/hsm/v2/groups/"+group_label+"/members/"+xname,
 		w.GetAccessToken(),
 	)
+	return err
 }
 
 func (w *Wrapper) UpdateGroup(newGroup Group) error {
-	err := deleteGroup(
+	_, err := openchamiRequestDelete[any](
 		"https://foobar.openchami.cluster:8443/hsm/v2/groups/"+newGroup.Label,
 		w.GetAccessToken(),
 	)
@@ -179,7 +42,7 @@ func (w *Wrapper) UpdateGroup(newGroup Group) error {
 		return err
 	}
 
-	return createGroup(
+	return openchamiRequestPost(
 		"https://foobar.openchami.cluster:8443/hsm/v2/groups",
 		w.GetAccessToken(),
 		newGroup,
@@ -187,7 +50,7 @@ func (w *Wrapper) UpdateGroup(newGroup Group) error {
 }
 
 func (w *Wrapper) CreateGroup(newGroup Group) error {
-	return createGroup(
+	return openchamiRequestPost(
 		"https://foobar.openchami.cluster:8443/hsm/v2/groups",
 		w.GetAccessToken(),
 		newGroup,
@@ -195,8 +58,9 @@ func (w *Wrapper) CreateGroup(newGroup Group) error {
 }
 
 func (w *Wrapper) DeleteGroup(group_label string) error {
-	return deleteGroup(
+	_, err := openchamiRequestDelete[any](
 		"https://foobar.openchami.cluster:8443/hsm/v2/groups/"+group_label,
 		w.GetAccessToken(),
 	)
+	return err
 }
