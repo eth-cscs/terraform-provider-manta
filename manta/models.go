@@ -21,8 +21,8 @@ func NewWrapper(base_url, access_token string) *Wrapper {
 
 type DiscoveryInfo struct {
 	RedfishVersion string `json:"RedfishVersion"`
-	LastAttempt    string `json:"LastAttempt"`
-	LastStatus     string `json:"LastStatus"`
+	LastAttempt    string `json:"LastDiscoveryAttempt"`
+	LastStatus     string `json:"LastDiscoveryStatus"`
 }
 
 type RfeItem struct {
