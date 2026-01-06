@@ -105,6 +105,18 @@ It is the two functions that request directly OpenCHAMI:
 * [ ] reproduce `examples` folder as standard (eg., https://github.com/hashicorp/terraform-provider-scaffolding-framework/tree/main/examples[terraform-provider-scaffolding-framework])
 * [ ] adapt tools folder
 
+=== Manta web service
+
+Reproduce these OpenCHAMI routes
+
+* [ ] `/cloud-init/admin/cluster-defaults`
+* [ ] `/cloud-init/admin/groups`
+* [ ] `/cloud-init/admin/groups/{groupDataName}`
+* [ ] `/hsm/v2/groups/+{groupLabel}+/members`
+* [ ] `/hsm/v2/groups/+{groupLabel}+/members/+{xname}`
+* [ ] `/hsm/v2/State/Components`
+* [ ] `/hsm/v2/State/Components/{id}`
+
 == Resources
 
 === What is Terraform provider
