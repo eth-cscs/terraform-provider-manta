@@ -9,7 +9,7 @@ func (w *Wrapper) DeleteEthernetInterface(mac string) error {
 	ethInterfaceID := strings.Replace(mac, ":", "", -1)
 
 	ochamiError, err := openchamiRequestDelete[OchamiError](
-		"https://foobar.openchami.cluster:8443/hsm/v2/Inventory/EthernetInterfaces/"+ethInterfaceID,
+		w.Base_url+"/ethernet-interface/"+ethInterfaceID,
 		w.GetAccessToken(),
 	)
 
@@ -24,7 +24,7 @@ func (w *Wrapper) GetEthernetInterface(mac string) (NodeInterface, OchamiError) 
 	ethInterfaceID := strings.Replace(mac, ":", "", -1)
 
 	ni, _, oe := openchamiRequestOchami[NodeInterface](
-		"https://foobar.openchami.cluster:8443/hsm/v2/Inventory/EthernetInterfaces/"+ethInterfaceID,
+		w.Base_url+"/ethernet-interface/"+ethInterfaceID,
 		w.GetAccessToken(),
 		"GET",
 	)
@@ -45,7 +45,7 @@ func (w *Wrapper) AddEthernetInterface(nodeInterface NodeInterface) error {
 	}
 
 	return openchamiRequestPost(
-		"https://foobar.openchami.cluster:8443/hsm/v2/Inventory/EthernetInterfaces/",
+		w.Base_url+"/ethernet-interface",
 		w.GetAccessToken(),
 		nodeInterface,
 	)
@@ -55,7 +55,7 @@ func (w *Wrapper) PatchEthernetInterface(nodeInterface NodeInterfacePatch) error
 	ethInterfaceID := strings.Replace(nodeInterface.MAC, ":", "", -1)
 
 	return openchamiRequestPatch(
-		"https://foobar.openchami.cluster:8443/hsm/v2/Inventory/EthernetInterfaces/"+ethInterfaceID,
+		w.Base_url+"/ethernet-interface/"+ethInterfaceID,
 		w.GetAccessToken(),
 		nodeInterface,
 	)

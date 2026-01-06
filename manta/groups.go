@@ -34,7 +34,7 @@ func (w *Wrapper) DeleteMemberToGroup(xname, group_label string) error {
 
 func (w *Wrapper) UpdateGroup(newGroup Group) error {
 	_, err := openchamiRequestDelete[any](
-		"https://foobar.openchami.cluster:8443/hsm/v2/groups/"+newGroup.Label,
+		w.Base_url+"/group/"+newGroup.Label,
 		w.GetAccessToken(),
 	)
 
@@ -43,7 +43,7 @@ func (w *Wrapper) UpdateGroup(newGroup Group) error {
 	}
 
 	return openchamiRequestPost(
-		"https://foobar.openchami.cluster:8443/hsm/v2/groups",
+		w.Base_url+"/group",
 		w.GetAccessToken(),
 		newGroup,
 	)
@@ -51,7 +51,7 @@ func (w *Wrapper) UpdateGroup(newGroup Group) error {
 
 func (w *Wrapper) CreateGroup(newGroup Group) error {
 	return openchamiRequestPost(
-		"https://foobar.openchami.cluster:8443/hsm/v2/groups",
+		w.Base_url+"/group",
 		w.GetAccessToken(),
 		newGroup,
 	)
@@ -59,7 +59,7 @@ func (w *Wrapper) CreateGroup(newGroup Group) error {
 
 func (w *Wrapper) DeleteGroup(group_label string) error {
 	_, err := openchamiRequestDelete[any](
-		"https://foobar.openchami.cluster:8443/hsm/v2/groups/"+group_label,
+		w.Base_url+"/group/"+group_label,
 		w.GetAccessToken(),
 	)
 	return err

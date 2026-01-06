@@ -10,7 +10,7 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 	rfes.RedfishEndpoints = append(rfes.RedfishEndpoints, rfeItem)
 
 	ochamiError := openchamiRequestPostOchami(
-		"https://foobar.openchami.cluster:8443/hsm/v2/Inventory/RedfishEndpoints",
+		w.Base_url+"/redfish",
 		w.GetAccessToken(),
 		rfes,
 	)
@@ -43,7 +43,7 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 
 func (w *Wrapper) DeleteRfe(rfeID string) error {
 	_, err := openchamiRequestDelete[any](
-		"https://foobar.openchami.cluster:8443/hsm/v2/Inventory/RedfishEndpoints/"+rfeID,
+		w.Base_url+"/redfish/"+rfeID,
 		w.GetAccessToken(),
 	)
 	return err
@@ -51,7 +51,7 @@ func (w *Wrapper) DeleteRfe(rfeID string) error {
 
 func (w *Wrapper) GetRfe() ([]RfeItem, error) {
 	getrfe, err := openchamiRequestDelete[RedfishEndpointArray](
-		"https://foobar.openchami.cluster:8443/hsm/v2/Inventory/RedfishEndpoints",
+		w.Base_url+"/redfish",
 		w.GetAccessToken(),
 	)
 
@@ -65,7 +65,7 @@ func (w *Wrapper) GetRfe() ([]RfeItem, error) {
 
 func (w *Wrapper) GetRfeId(rfeID string) (RfeItem, error) {
 	rfe, err := openchamiRequestGet[RfeItem](
-		"https://foobar.openchami.cluster:8443/hsm/v2/Inventory/RedfishEndpoints/"+rfeID,
+		w.Base_url+"/redfish/"+rfeID,
 		w.GetAccessToken(),
 	)
 
