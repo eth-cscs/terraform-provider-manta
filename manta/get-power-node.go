@@ -7,7 +7,7 @@ import (
 )
 
 func (w *Wrapper) GetPowerStatusNodeId(id string) (string, error) {
-	pcs, err := openchamiRequestGet[PcsStatus](
+	pcs, err := requestGet[PcsStatus](
 		"https://foobar.openchami.cluster:8443/power-control/v1/power-status?xname="+id,
 		w.GetAccessToken(),
 	)

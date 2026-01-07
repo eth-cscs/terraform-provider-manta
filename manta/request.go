@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func openchamiRequestBodyOchami[T any](url, token, method string, obj T) OchamiError {
+func requestBodyOchami[T any](url, token, method string, obj T) OchamiError {
 	ochamiError := OchamiError{}
 
 	tr := &http.Transport{
@@ -46,7 +46,7 @@ func openchamiRequestBodyOchami[T any](url, token, method string, obj T) OchamiE
 	return ochamiError
 }
 
-func openchamiRequestBody[T any](url, token, method string, obj T) error {
+func requestBody[T any](url, token, method string, obj T) error {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
@@ -85,7 +85,7 @@ func openchamiRequestBody[T any](url, token, method string, obj T) error {
 	return nil
 }
 
-func openchamiRequestOchami[T any](url, token, method string) (T, error, OchamiError) {
+func requestOchami[T any](url, token, method string) (T, error, OchamiError) {
 	var returned T
 	ochamiError := OchamiError{}
 
@@ -116,7 +116,7 @@ func openchamiRequestOchami[T any](url, token, method string) (T, error, OchamiE
 	return returned, err, ochamiError
 }
 
-func openchamiRequest[T any](url, token, method string) (T, error) {
+func request[T any](url, token, method string) (T, error) {
 	var returned T
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -148,30 +148,30 @@ func openchamiRequest[T any](url, token, method string) (T, error) {
 	return returned, nil
 }
 
-func openchamiRequestPost[T any](url, token string, obj T) error {
-	return openchamiRequestBody(url, token, "POST", obj)
+func requestPost[T any](url, token string, obj T) error {
+	return requestBody(url, token, "POST", obj)
 }
 
-func openchamiRequestPostOchami[T any](url, token string, obj T) OchamiError {
-	return openchamiRequestBodyOchami(url, token, "POST", obj)
+func requestPostOchami[T any](url, token string, obj T) OchamiError {
+	return requestBodyOchami(url, token, "POST", obj)
 }
 
-func openchamiRequestPut[T any](url, token string, obj T) error {
-	return openchamiRequestBody(url, token, "PUT", obj)
+func requestPut[T any](url, token string, obj T) error {
+	return requestBody(url, token, "PUT", obj)
 }
 
-func openchamiRequestPatch[T any](url, token string, obj T) error {
-	return openchamiRequestBody(url, token, "PATCH", obj)
+func requestPatch[T any](url, token string, obj T) error {
+	return requestBody(url, token, "PATCH", obj)
 }
 
-func openchamiRequestGet[T any](url, token string) (T, error) {
-	return openchamiRequest[T](url, token, "GET")
+func requestGet[T any](url, token string) (T, error) {
+	return request[T](url, token, "GET")
 }
 
-func openchamiRequestDelete[T any](url, token string) (T, error) {
-	return openchamiRequest[T](url, token, "DELETE")
+func requestDelete[T any](url, token string) (T, error) {
+	return request[T](url, token, "DELETE")
 }
 
-func openchamiRequestDeleteBody[T any](url, token string, obj T) error {
-	return openchamiRequestBody(url, token, "DELETE", obj)
+func requestDeleteBody[T any](url, token string, obj T) error {
+	return requestBody(url, token, "DELETE", obj)
 }

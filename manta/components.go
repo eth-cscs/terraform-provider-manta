@@ -27,7 +27,7 @@ type Component struct {
 }
 
 func (w *Wrapper) CreateComponent(newComponents Components) error {
-	return openchamiRequestPost(
+	return requestPost(
 		"https://foobar.openchami.cluster:8443/hsm/v2/State/Components",
 		w.GetAccessToken(),
 		newComponents,
@@ -35,14 +35,14 @@ func (w *Wrapper) CreateComponent(newComponents Components) error {
 }
 
 func (w *Wrapper) GetComponent() (Components, error) {
-	return openchamiRequestGet[Components](
+	return requestGet[Components](
 		"https://foobar.openchami.cluster:8443/hsm/v2/State/Components",
 		w.GetAccessToken(),
 	)
 }
 
 func (w *Wrapper) DeleteComponent(deleteComponents Components) error {
-	return openchamiRequestDeleteBody(
+	return requestDeleteBody(
 		"https://foobar.openchami.cluster:8443/hsm/v2/State/Components",
 		w.GetAccessToken(),
 		deleteComponents,

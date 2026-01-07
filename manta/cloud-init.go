@@ -25,7 +25,7 @@ func (self *ClusterDefaults) Cmp(other *ClusterDefaults) bool {
 }
 
 func (w *Wrapper) CreateClusterDefault(newClusterDefaults ClusterDefaults) error {
-	return openchamiRequestPost(
+	return requestPost(
 		"https://foobar.openchami.cluster:8443/cloud-init/admin/cluster-defaults",
 		w.GetAccessToken(),
 		newClusterDefaults,
@@ -33,7 +33,7 @@ func (w *Wrapper) CreateClusterDefault(newClusterDefaults ClusterDefaults) error
 }
 
 func (w *Wrapper) GetClusterDefault() (ClusterDefaults, error) {
-	return openchamiRequestGet[ClusterDefaults](
+	return requestGet[ClusterDefaults](
 		"https://foobar.openchami.cluster:8443/cloud-init/admin/cluster-defaults",
 		w.GetAccessToken(),
 	)

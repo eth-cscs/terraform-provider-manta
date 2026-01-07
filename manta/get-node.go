@@ -1,7 +1,7 @@
 package manta
 
 func (w *Wrapper) GetNodeId(id string) (NodeItem, error) {
-	node, err := openchamiRequestGet[NodeItem](
+	node, err := requestGet[NodeItem](
 		"https://foobar.openchami.cluster:8443/hsm/v2/State/Components/"+id,
 		w.GetAccessToken(),
 	)

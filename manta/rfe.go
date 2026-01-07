@@ -9,7 +9,7 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 	var rfes RedfishEndpointArray
 	rfes.RedfishEndpoints = append(rfes.RedfishEndpoints, rfeItem)
 
-	ochamiError := openchamiRequestPostOchami(
+	ochamiError := requestPostOchami(
 		w.Base_url+"/redfish",
 		w.GetAccessToken(),
 		rfes,
@@ -42,7 +42,7 @@ func (w *Wrapper) AddRfe(rfeItem RfeItem) (RfeItem, error) {
 }
 
 func (w *Wrapper) DeleteRfe(rfeID string) error {
-	_, err := openchamiRequestDelete[any](
+	_, err := requestDelete[any](
 		w.Base_url+"/redfish/"+rfeID,
 		w.GetAccessToken(),
 	)
@@ -50,7 +50,7 @@ func (w *Wrapper) DeleteRfe(rfeID string) error {
 }
 
 func (w *Wrapper) GetRfe() ([]RfeItem, error) {
-	getrfe, err := openchamiRequestDelete[RedfishEndpointArray](
+	getrfe, err := requestDelete[RedfishEndpointArray](
 		w.Base_url+"/redfish",
 		w.GetAccessToken(),
 	)
@@ -64,7 +64,7 @@ func (w *Wrapper) GetRfe() ([]RfeItem, error) {
 }
 
 func (w *Wrapper) GetRfeId(rfeID string) (RfeItem, error) {
-	rfe, err := openchamiRequestGet[RfeItem](
+	rfe, err := requestGet[RfeItem](
 		w.Base_url+"/redfish/"+rfeID,
 		w.GetAccessToken(),
 	)

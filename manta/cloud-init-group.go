@@ -23,7 +23,7 @@ func (self *GroupData) Cmp(other *GroupData) bool {
 }
 
 func (w *Wrapper) CreateGroupData(newGroupData GroupData) error {
-	return openchamiRequestPost(
+	return requestPost(
 		"https://foobar.openchami.cluster:8443/cloud-init/admin/groups",
 		w.GetAccessToken(),
 		newGroupData,
@@ -31,7 +31,7 @@ func (w *Wrapper) CreateGroupData(newGroupData GroupData) error {
 }
 
 func (w *Wrapper) DeleteGroupData(groupDataName string) error {
-	_, err := openchamiRequestDelete[any](
+	_, err := requestDelete[any](
 		"https://foobar.openchami.cluster:8443/cloud-init/admin/groups/"+groupDataName,
 		w.GetAccessToken(),
 	)
@@ -44,7 +44,7 @@ func (w *Wrapper) DeleteGroupData(groupDataName string) error {
 }
 
 func (w *Wrapper) GetGroupData(group_name string) (GroupData, error) {
-	return openchamiRequestGet[GroupData](
+	return requestGet[GroupData](
 		"https://foobar.openchami.cluster:8443/cloud-init/admin/groups/"+group_name,
 		w.GetAccessToken(),
 	)
