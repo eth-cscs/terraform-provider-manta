@@ -8,6 +8,15 @@
 
 image:assets/deployment-terraform-provider-manta.svg[]
 
+=== Features
+
+* [x] CRUD redfish endpoint
+* [x] CRUD boot script
+* [x] Switch power status of a node
+* [x] Passing cloud-init data
+* [x] Attribute IP address to a node mac address
+* [x] Boot an O/S diskless
+
 == Steps
 
 === Testing environment
